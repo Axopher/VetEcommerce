@@ -1,0 +1,96 @@
+{% extends "main.html" %}
+{% load static %}
+{% block content %}
+
+<div class="breadcrumb-area bg-gray-4 breadcrumb-padding-1">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <h2>Cart</h2>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><i class="ti-angle-right"></i></li>
+                <li>Cart</li>
+            </ul>
+        </div>
+    </div>
+    <div class="breadcrumb-img-1">
+        <img src="assets/images/banner/breadcrumb-1.png" alt="">
+    </div>
+    <div class="breadcrumb-img-2">
+        <img src="assets/images/banner/breadcrumb-2.png" alt="">
+    </div>
+</div>
+
+<div class="cart-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                    <div class="cart-table-content">
+                        <div class="table-content table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="width-thumbnail"></th>
+                                        <th class="width-name">Product</th>
+                                        <th class="width-price"> Price</th>
+                                        <th class="width-quantity">Quantity</th>
+                                        <th class="width-subtotal">Subtotal</th>
+                                        <th class="width-remove"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="#"><img src="{{item.product.imageURL}}" alt=""></a>
+                                        </td>
+                                        <td class="product-name">
+                                            <h5><a href="#">{{item.product.name}}</a></h5>
+                                        </td>
+                                        <td class="product-cart-price"><span class="amount">${{item.product.price|floatformat:2}}</span></td>
+                                        <td class="cart-quality">
+                                            <span  data-product={{item.product.id}} data-action="remove" class="dec qtybutton update-cart" style="width: 30px; text-align: center; cursor: pointer; border: 1px solid #ccc; background-color: #f9f9f9; border-radius: 4px 0 0 4px;">-</span>
+                                            <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="{{item.quantity}}" style="width: 30px; text-align: center; border: none; background-color: #f9f9f9;">
+                                            <span data-product={{item.product.id}} data-action="add" class="inc qtybutton update-cart" style="width: 30px; text-align: center; cursor: pointer; border: 1px solid #ccc; background-color: #f9f9f9; border-radius: 0 4px 4px 0;">+</span>
+                                        </td>
+                                        <td class="product-total"><span>${{item.get_total}}</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="cart-shiping-update-wrapper">
+                                <div class="cart-shiping-update btn-hover">
+                                    <a href="{% url 'store' %}">Continue Shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-12 col-12">
+                <div class="grand-total-wrap">
+                    <div class="grand-total-content">
+                        <div class="grand-total">
+                            <h5>Items: <span style="float: right;">{{order.get_cart_items}}</span></h5>
+                        </div>    
+                        <hr>
+                        <div class="grand-total">
+                            <h4>Total <span>${{order.get_cart_total|floatformat:2}}</span></h4>
+                        </div>
+                    </div>
+                    <div class="grand-total-btn btn-hover">
+                        <a class="btn theme-color" href="{% url 'checkout' %}">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} 
