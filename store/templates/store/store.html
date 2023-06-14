@@ -52,7 +52,7 @@
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                     <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                         <div class="product-img img-zoom mb-25">
-                                            <a href="product-details.html">
+                                            <a href="{% url 'product_detail' product.id %}">
                                                 <img src="{{product.imageURL}}" alt="">
                                             </a>
                                             <div class="product-badge badge-top badge-right badge-pink">
@@ -65,7 +65,7 @@
                                                 </button>
                                             </div>
                                             <div class="product-action-2-wrap">
-                                                <button data-product={{product.id}} data-action="add" class="product-action-btn-2 add-btn update-cart" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
+                                                <button data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="product-action-btn-2 add-btn add_to_cart" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
                                             </div>
                                         </div>
                                         <div class="product-content">

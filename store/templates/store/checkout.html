@@ -88,9 +88,16 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <div class="billing-info mb-20">
+                                <div class="billing-select select-style mb-20">
                                     <label>Country <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
+                                    <select class="select-two-active select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-select2-id="select2-data-28-3uq2">
+                                        <option data-select2-id="select2-data-30-fan4">Select a country</option>
+                                        <option>Azerbaijan</option>
+                                        <option>Bahamas</option>
+                                        <option>Bahrain</option>
+                                        <option>Bangladesh</option>
+                                        <option>Barbados</option>
+                                    </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-29-islq" style="width: 670px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-ra3n-container" aria-controls="select2-ra3n-container"><span class="select2-selection__rendered" id="select2-ra3n-container" role="textbox" aria-readonly="true" title="Select a country">Select a country</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -128,7 +135,7 @@
                                 <div class="billing-info mb-20">
                                     <label>Email Address <abbr class="required" title="required">*</abbr></label>
                                     <input type="text">
-                                </div>
+                                <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div></div>
                             </div>
                         </div>
                         <div class="checkout-account mb-25">
@@ -138,7 +145,7 @@
                         <div class="checkout-account-toggle open-toggle2 mb-30">
                             <label>Email Address</label>
                             <input placeholder="Password" type="password">
-                        </div>
+                        <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div></div>
                         <div class="checkout-account mt-25">
                             <input class="checkout-toggle" type="checkbox">
                             <span>Ship to a different address?</span>
@@ -166,14 +173,14 @@
                                 <div class="col-lg-12">
                                     <div class="billing-select select-style mb-20">
                                         <label>Country</label>
-                                        <select class="select-two-active select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-select2-id="select2-data-36-23m6">
-                                            <option data-select2-id="select2-data-38-evo7">Select a country</option>
+                                        <select class="select-two-active select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-select2-id="select2-data-36-2knc">
+                                            <option data-select2-id="select2-data-38-2ih7">Select a country</option>
                                             <option>Azerbaijan</option>
                                             <option>Bahamas</option>
                                             <option>Bahrain</option>
                                             <option>Bangladesh</option>
                                             <option>Barbados</option>
-                                        </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-37-arrs" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-4tfk-container" aria-controls="select2-4tfk-container"><span class="select2-selection__rendered" id="select2-4tfk-container" role="textbox" aria-readonly="true" title="Select a country">Select a country</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                        </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-37-kyhq" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-qk79-container" aria-controls="select2-qk79-container"><span class="select2-selection__rendered" id="select2-qk79-container" role="textbox" aria-readonly="true" title="Select a country">Select a country</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -233,15 +240,14 @@
                                 </div>
                                 <div class="your-order-middle">
                                     <ul>
-                                        {% for item in items %}
-                                        <li>{{item.product.name}} X {{item.quantity}} <span>${{item.product.price|floatformat:2}} </span></li>
+                                        {% for item in  items %}
+                                        <li>{{item.product}} X {{item.quantity}} <span>${{item.get_total}} </span></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="your-order-info order-subtotal">
                                     <ul>
-                                        <li>Items <span> {{order.get_cart_items}}</span></li>
-                                        <li>Subtotal <span> ${{order.get_cart_total|floatformat:2}} </span></li>
+                                        <li>Subtotal <span>${{cart.get_cart_total}} </span></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-info order-shipping">
@@ -252,7 +258,7 @@
                                 </div>
                                 <div class="your-order-info order-total">
                                     <ul>
-                                        <li>Total <span>{{order.get_cart_total|floatformat:2}} </span></li>
+                                        <li>Total <span>${{cart.get_cart_total}} </span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -260,28 +266,28 @@
                                 <div class="pay-top sin-payment">
                                     <input id="payment_method_1" class="input-radio" type="radio" value="cheque" checked="checked" name="payment_method">
                                     <label for="payment_method_1"> Direct Bank Transfer </label>
-                                    <div class="payment-box payment_method_bacs" style="display: none;">
+                                    <div class="payment-box payment_method_bacs" style="display: block;">
                                         <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
                                     </div>
                                 </div>
                                 <div class="pay-top sin-payment">
                                     <input id="payment-method-2" class="input-radio" type="radio" value="cheque" name="payment_method">
                                     <label for="payment-method-2">Check payments</label>
-                                    <div class="payment-box payment_method_bacs" style="display: none;">
+                                    <div class="payment-box payment_method_bacs">
                                         <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
                                     </div>
                                 </div>
                                 <div class="pay-top sin-payment">
                                     <input id="payment-method-3" class="input-radio" type="radio" value="cheque" name="payment_method">
                                     <label for="payment-method-3">Cash on delivery </label>
-                                    <div class="payment-box payment_method_bacs" style="display: none;">
+                                    <div class="payment-box payment_method_bacs">
                                         <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
                                     </div>
                                 </div>
                                 <div class="pay-top sin-payment sin-payment-3">
                                     <input id="payment-method-4" class="input-radio" type="radio" value="cheque" name="payment_method">
                                     <label for="payment-method-4">PayPal <img alt="" src="assets/images/icon-img/payment.png"><a href="#">What is PayPal?</a></label>
-                                    <div class="payment-box payment_method_bacs" style="display: block;">
+                                    <div class="payment-box payment_method_bacs">
                                         <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
                                     </div>
                                 </div>

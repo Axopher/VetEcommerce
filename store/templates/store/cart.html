@@ -25,6 +25,8 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                <form method="POST" action="{% url 'update_cart' %}">
+                    {% csrf_token %}
                     <div class="cart-table-content">
                         <div class="table-content table-responsive">
                             <table>
@@ -40,20 +42,21 @@
                                 </thead>
                                 <tbody>
                                     {% for item in items %}
-                                    <tr>
+                                    <tr id="delete_item{{item.id}}">
                                         <td class="product-thumbnail">
-                                            <a href="#"><img src="{{item.product.imageURL}}" alt=""></a>
+                                            <a href="#"><img src="{{item.product.image.url}}" alt=""></a>
                                         </td>
                                         <td class="product-name">
-                                            <h5><a href="#">{{item.product.name}}</a></h5>
+                                            <h5><a href="#">{{item.product}}</a></h5>
                                         </td>
-                                        <td class="product-cart-price"><span class="amount">${{item.product.price|floatformat:2}}</span></td>
+                                        <td class="product-cart-price"><span class="amount">{{item.product.price}}</span></td>
                                         <td class="cart-quality">
-                                            <span  data-product={{item.product.id}} data-action="remove" class="dec qtybutton update-cart" style="width: 30px; text-align: center; cursor: pointer; border: 1px solid #ccc; background-color: #f9f9f9; border-radius: 4px 0 0 4px;">-</span>
-                                            <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="{{item.quantity}}" style="width: 30px; text-align: center; border: none; background-color: #f9f9f9;">
-                                            <span data-product={{item.product.id}} data-action="add" class="inc qtybutton update-cart" style="width: 30px; text-align: center; cursor: pointer; border: 1px solid #ccc; background-color: #f9f9f9; border-radius: 0 4px 4px 0;">+</span>
+                                            <div class="product-quality"><div class="dec qtybutton">-</div>
+                                                <input class="cart-plus-minus-box input-text qty text" name="quantity" value="{{item.quantity}}">
+                                            <div class="inc qtybutton">+</div></div>
                                         </td>
-                                        <td class="product-total"><span>${{item.get_total}}</span></td>
+                                        <td class="product-total"><span>{{item.get_total}}</span></td>
+                                        <td data-id="{{item.id}}" data-action="remove" data-url="{% url 'delete_from_cart' %}" class="product-remove delete_from_cart"><a href="#"><i class=" ti-trash "></i></a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -64,27 +67,92 @@
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
                                 <div class="cart-shiping-update btn-hover">
-                                    <a href="{% url 'store' %}">Continue Shopping</a>
+                                    <a href="#">Continue Shopping</a>
+                                </div>
+                                <div class="cart-clear-wrap">
+                                    <div class="cart-clear btn-hover">
+                                        <button>Update Cart</button>
+                                    </div>
+                                    <div class="cart-clear btn-hover">
+                                        <a href="{% url 'clear_cart' %}">Clear Cart</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </form>
             </div>
         </div>
-        <div class="row">
+        <div class="row" data-select2-id="select2-data-10-nql0">
+            <div class="col-lg-4 col-md-6 col-12" data-select2-id="select2-data-9-bm38">
+                <div class="cart-calculate-discount-wrap mb-40">
+                    <h4>Calculate shipping </h4>
+                    <div class="calculate-discount-content">
+                        <div class="select-style mb-15" data-select2-id="select2-data-8-e7f6">
+                            <select class="select-two-active select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-select2-id="select2-data-129-mvlr">
+                                <option data-select2-id="select2-data-131-f0td">Bangladesh</option>
+                                <option>Bahrain</option>
+                                <option>Azerbaijan</option>
+                                <option>Barbados</option>
+                                <option>Barbados</option>
+                            </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-130-5hxt" style="width: 370px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-dfid-container" aria-controls="select2-dfid-container"><span class="select2-selection__rendered" id="select2-dfid-container" role="textbox" aria-readonly="true" title="Bangladesh">Bangladesh</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                        <div class="select-style mb-15">
+                            <select class="select-two-active select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-select2-id="select2-data-136-c3tc">
+                                <option data-select2-id="select2-data-138-1syd">State / County</option>
+                                <option>Bahrain</option>
+                                <option>Azerbaijan</option>
+                                <option>Barbados</option>
+                                <option>Barbados</option>
+                            </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="select2-data-137-2o7x" style="width: 370px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-8s9h-container" aria-controls="select2-8s9h-container"><span class="select2-selection__rendered" id="select2-8s9h-container" role="textbox" aria-readonly="true" title="State / County">State / County</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        </div>
+                        <div class="input-style">
+                            <input type="text" placeholder="Town / City">
+                        </div>
+                        <div class="input-style">
+                            <input type="text" placeholder="Postcode / ZIP">
+                        </div>
+                        <div class="calculate-discount-btn btn-hover">
+                            <a class="btn theme-color" href="#">Update</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="cart-calculate-discount-wrap mb-40">
+                    <h4>Coupon Discount </h4>
+                    <div class="calculate-discount-content">
+                        <p>Enter your coupon code if you have one.</p>
+                        <div class="input-style">
+                            <input type="text" placeholder="Coupon code">
+                        </div>
+                        <div class="calculate-discount-btn btn-hover">
+                            <a class="btn theme-color" href="#">Apply Coupon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-4 col-md-12 col-12">
                 <div class="grand-total-wrap">
                     <div class="grand-total-content">
+                        <h3>Subtotal <span>$180.00</span></h3>
+                        <div class="grand-shipping">
+                            <span>Shipping</span>
+                            <ul>
+                                <li><input type="radio" name="shipping" value="info" checked="checked"><label>Free shipping</label></li>
+                                <li><input type="radio" name="shipping" value="info" checked="checked"><label>Flat rate: <span>$100.00</span></label></li>
+                                <li><input type="radio" name="shipping" value="info" checked="checked"><label>Local pickup: <span>$120.00</span></label></li>
+                            </ul>
+                        </div>
+                        <div class="shipping-country">
+                            <p>Shipping to Bangladesh</p>
+                        </div>
                         <div class="grand-total">
-                            <h5>Items: <span style="float: right;">{{order.get_cart_items}}</span></h5>
-                        </div>    
-                        <hr>
-                        <div class="grand-total">
-                            <h4>Total <span>${{order.get_cart_total|floatformat:2}}</span></h4>
+                            <h4>Total <span>$185.00</span></h4>
                         </div>
                     </div>
                     <div class="grand-total-btn btn-hover">
-                        <a class="btn theme-color" href="{% url 'checkout' %}">Proceed to checkout</a>
+                        <a class="btn theme-color" href="checkout.html">Proceed to checkout</a>
                     </div>
                 </div>
             </div>

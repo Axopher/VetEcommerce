@@ -80,7 +80,7 @@
                         </div>
                         <div class="header-action-style header-action-cart">
                             <a class="cart-active" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
-                                <span class="product-count bg-black">{{cartItems}}</span>
+                                <span class="product-count bg-black" id="cart_counter">{{cart.get_cart_items}}</span>
                             </a>
                         </div>
                         <div class="header-action-style d-block d-lg-none">
@@ -117,7 +117,7 @@
                 {% endfor %}
             </ul>
             <div class="cart-total">
-                <h4>Total: <span>${{order.get_cart_total|floatformat:2}}</span></h4>
+                <h4>Total: <span>${{cart.get_cart_total|floatformat:2}}</span></h4>
             </div>
             <div class="cart-btn btn-hover">
                 <a class="theme-color" href="{% url 'cart' %}">view cart</a>
