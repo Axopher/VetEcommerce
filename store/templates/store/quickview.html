@@ -1,0 +1,76 @@
+{% load static %}
+
+<!-- Product Modal start -->
+{% for product in products %}
+<div class="modal fade quickview-modal-style" id="exampleModal{{product.id}}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close"><i class=" ti-close "></i></a>
+            </div>
+            <div class="modal-body">
+                <div class="row gx-0">
+                    <div class="col-lg-5 col-md-5 col-12">
+                        <div style="object-fit: cover; width: 100%; height: 100%;" class="modal-img-wrap">
+                            <img src="{{product.imageURL}}" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-12">
+                        <div class="product-details-content quickview-content">
+                            <h2>{{product}}</h2>
+                            <div class="product-details-price">
+                                <span class="old-price">${{product.price}}</span>
+                                <span class="new-price">${{product.price}}</span>
+                            </div>
+                            <div class="product-details-review">
+                                <div class="product-rating">
+                                    <i class=" ti-star"></i>
+                                    <i class=" ti-star"></i>
+                                    <i class=" ti-star"></i>
+                                    <i class=" ti-star"></i>
+                                    <i class=" ti-star"></i>
+                                </div>
+                                <span>( 1 Customer Review )</span>
+                            </div>
+                            <div class="product-color product-color-active product-details-color">
+                                <span>Color :</span>
+                                <ul>
+                                    <li><a title="Pink" class="pink" href="#">pink</a></li>
+                                    <li><a title="Yellow" class="active yellow" href="#">yellow</a></li>
+                                    <li><a title="Purple" class="purple" href="#">purple</a></li>
+                                </ul>
+                            </div>
+                            <p>{{product.description}}</p>
+                            <div class="product-details-action-wrap">
+                                <div>         
+                                    <ul>
+                                        <li>
+                                          <a href="#" data-id={{product.id}} data-action="subtract" data-url="{% url 'update_cart_item' %}" class="add_to_cart" style="margin-right: 10px;">
+                                            <img src="{% static 'images/icon-img/minus.png' %}">
+                                        </a>
+                                        <label  id="cart_count{{product.id}}">0</label>
+                                        <a href="#" data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="add_to_cart" style="margin-left: 10px;">
+                                            <img src="{% static 'images/icon-img/plus.png' %}">
+                                        </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="single-product-cart btn-hover">
+                                    <a href="{% url 'cart' %}">Go to cart</a>
+                                </div>
+                                <div class="single-product-wishlist">
+                                    <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
+                                </div>
+                                <div class="single-product-compare">
+                                    <a title="Compare" href="#"><i class="pe-7s-shuffle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- Product Modal end -->

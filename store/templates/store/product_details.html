@@ -1,4 +1,5 @@
 {% extends 'main.html' %}
+{% load static %}
 {% block content %}
 <div class="product-details-area pb-100 pt-100">
     <div class="container">
@@ -130,11 +131,23 @@
                         </ul>
                     </div>
                     <div class="product-details-action-wrap">
-                        <div class="product-quality">
-                            <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="{{quantity}}">
+                        <div class="product-details-action-wrap">
+                            <div>         
+                                <ul>
+                                    <li>
+                                      <a href="#" data-id={{product.id}} data-action="subtract" data-url="{% url 'update_cart_item' %}" class="add_to_cart" style="margin-right: 10px;">
+                                        <img src="{% static 'images/icon-img/minus.png' %}">
+                                    </a>
+                                    <label  id="cart_count{{product.id}}">0</label>
+                                    <a href="#" data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="add_to_cart" style="margin-left: 10px;">
+                                        <img src="{% static 'images/icon-img/plus.png' %}">
+                                    </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="single-product-cart btn-hover">
-                            <a href="#">Add to cart</a>
+                            <a href="{% url 'cart' %}">Go to cart</a>
                         </div>
                         <div class="single-product-wishlist">
                             <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>

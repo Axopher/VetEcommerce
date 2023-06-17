@@ -42,16 +42,19 @@
     <link rel="stylesheet" href="{% static 'css/plugins/easyzoom.css' %} "/>
     <link rel="stylesheet" href="{% static 'css/plugins/slinky.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" />    
+    
 
 </head>
 <body>
 
     <div class="main-wrapper main-wrapper-2">
-        {% include "navbar.html" %}    
+        {% include "navbar.html" %} 
+        {% include "alerts.html" %}   
         {% block content %}
         
         {% endblock content %}
+        {% include 'store/quickview.html' %}
     </div>
     
     <!-- All JS is here -->
@@ -82,5 +85,7 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
     
+    <!-- sweet alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>

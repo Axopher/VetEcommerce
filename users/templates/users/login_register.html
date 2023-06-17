@@ -1,0 +1,72 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="login-register-area pb-100 pt-95">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 offset-lg-2">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav" role="tablist">
+                        <a class="{% if active_tab == 'login' %}active{% endif %}" data-bs-toggle="tab" href="#lg1" aria-selected="{% if active_tab == 'login' %}true{% else %}false{% endif %}" role="tab">
+                            <h4> login </h4>
+                        </a>
+                        <a class="{% if active_tab == 'register' %}active{% endif %}" data-bs-toggle="tab" href="#lg2" aria-selected="{% if active_tab == 'register' %}true{% else %}false{% endif %}" role="tab" tabindex="-1">
+                            <h4> register </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane {% if active_tab == 'login' %}active show{% endif %}" role="tabpanel">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <form action="{% url 'login' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="text" name="username" placeholder="Username">
+                                        <input type="password" name="password" placeholder="Password">
+                                        {% for error in field.errors %}
+
+                                            <p style="color:red;">{{error}}</p>
+                                        
+                                        {% endfor%}
+                                        <div class="login-toggle-btn">
+                                            <input type="checkbox">
+                                            <label>Remember me</label>
+                                            <a href="#">Forgot Password?</a>
+                                        </div>
+                                        <div class="button-box btn-hover">
+                                            <button type="submit">Login</button>
+                                        </div>
+                                    <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div><div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div></form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lg2" class="tab-pane {% if active_tab == 'register' %}active show{% endif %}" role="tabpanel">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <form action="{% url 'register' %}" method="post">
+                                        {% csrf_token %} 
+                                        {% for field in form %}
+                                        <div>
+                                        {{field}}
+                                        <!-- {% if field.help_text %}
+                                            <small>{{field.help_text}}</small>
+                                        {% endif %} -->
+
+                                        {% for error in field.errors %}
+                                            <p style="color: red;">{{ error }}</p>                                    
+                                        {% endfor%}
+
+                                        </div>
+                                        {% endfor %}                                       
+                                        <div class="button-box btn-hover">
+                                            <button type="submit">Register</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

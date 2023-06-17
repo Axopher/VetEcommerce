@@ -1,0 +1,42 @@
+{% if queryset.has_other_pages %}
+<div class="pagination-style-1" data-aos="fade-up" data-aos-delay="200">
+    <ul>
+        {% if queryset.has_previous %}
+        <li><a class="prev page-link" href="?page={{queryset.previous_page_number}}" data-page="{{queryset.previous_page_number}}"><i class=" ti-angle-double-left "></i></a></li>
+        {% endif %}
+        {% for page in custom_range %}
+        {% if page == queryset.number %}
+        <li><a class="active page-link" href="?page={{page}}" data-page="{{page}}">{{page}}</a></li>
+        {% else %}
+        <li><a class="page-link"  href="?page={{page}}" data-page="{{page}}">{{page}}</a></li>
+        {% endif %}  
+        {% endfor %}
+        {% if queryset.has_next %}
+        <li><a class="next page-link" href="?page={{queryset.next_page_number}}" data-page="{{queryset.next_page_number}}"><i class=" ti-angle-double-right "></i></a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+
+<script>
+    // GET search form and page links
+    let searchForm = document.getElementById('searchForm')
+    let pageLinks = document.getElementsByClassName('page-link')
+
+    // ensure search form exists
+    if(searchForm){
+        for(let i = 0; pageLinks.length > i; i++ ){
+            pageLinks[i].addEventListener('click',function (e){
+                e.preventDefault()
+                
+                // get the data attribute
+                let page = this.dataset.page
+                // add hidden search input to form
+                searchForm.innerHTML += `<input value=${page} name="page" hidden/>`
+                console.log(searchForm)
+                // submit form 
+                searchForm.submit()
+            })
+        }
+    }
+</script>

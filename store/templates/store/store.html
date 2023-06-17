@@ -26,17 +26,20 @@
                 <div class="shop-topbar-wrapper mb-40">
                     <div class="shop-topbar-left">
                         <div class="showing-item">
-                            <span>Showing 1–12 of 60 results</span>
+                            <span>Showing 4 of {{products_count}} results</span>
                         </div>
                     </div>
                     <div class="shop-topbar-right">
                         <div class="shop-sorting-area">
-                            <select class="nice-select nice-select-style-1">
-                                <option>Default Sorting</option>
-                                <option>Sort by popularity</option>
-                                <option>Sort by average rating</option>
-                                <option>Sort by latest</option>
-                            </select>
+                            <form action="{% url 'store' %}" method="get">
+                                <select class="nice-select nice-select-style-1">
+                                    <option value="">Default Sorting</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                    <button class="button-search"><i class="pe-7s-search"></i></button>
+                                </select>
+                            </form>
                         </div>
                         <div class="shop-view-mode nav">
                             <a class="active" href="#shop-1" data-bs-toggle="tab"><i class=" ti-layout-grid3 "></i> </a>
@@ -60,7 +63,7 @@
                                             </div>
                                             <div class="product-action-wrap">
                                                 <button class="product-action-btn-1" title="Wishlist"><i class="pe-7s-like"></i></button>
-                                                <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}">
                                                     <i class="pe-7s-look"></i>
                                                 </button>
                                             </div>
@@ -69,7 +72,7 @@
                                             </div>
                                         </div>
                                         <div class="product-content">
-                                            <h3><a href="#">{{product.imageURL}}</a></h3>
+                                            <h3><a href="#">{{product}}</a></h3>
                                             <div class="product-price">
                                                 <span class="old-price">${{product.price|floatformat:2}} </span>
                                                 <span class="new-price">${{product.price|floatformat:2}} </span>
@@ -79,14 +82,9 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div class="pagination-style-1" data-aos="fade-up" data-aos-delay="200">
-                                <ul>
-                                    <li><a class="active" href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a class="next" href="#"><i class=" ti-angle-double-right "></i></a></li>
-                                </ul>
-                            </div>
+                            {% include 'pagination.html' with queryset=products custom_range=custom_range %}
+
+
                         </div>
                         <div id="shop-2" class="tab-pane">
                             {% for product in products %}
@@ -132,15 +130,8 @@
                                 </div>
                             </div>
                             {% endfor %}
+                            {% include 'pagination.html' with queryset=products custom_range=custom_range %}
 
-                            <div class="pagination-style-1">
-                                <ul>
-                                    <li><a class="active" href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a class="next" href="#"><i class=" ti-angle-double-right "></i></a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,18 +1,22 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import User
+from users.models import Customer
 
 # Create your models here.
-class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(max_length=200)
-    phone = models.CharField(max_length=15)
 
-    def __str__(self):
-        return self.name
+# class Slider(models.Model):
+#     Discount_Deal = (
+#         ('Hot Deals','Hot Deals'),
+#         ('New Arrivals','New Arrivals'),
+#     )
+#     Image = models.ImageField(upload_to="slider")
+#     Discount_Deal = models.CharField(choices=Discount_Deal,max_length=100)
+#     Discount = models.PositiveIntegerField()
+#     Product = models.CharField()
+#     logo = models.ImageField()
+#     Link = models.CharField(max_length=200)
+
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -21,7 +25,7 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200,unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=7,decimal_places=2)

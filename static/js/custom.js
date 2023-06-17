@@ -2,7 +2,7 @@ $(document).ready(function() {
     // add to cart
     $('.add_to_cart').on('click', function(e) {
         e.preventDefault();
-        
+        cartItemID = $(this).attr("data-id");
         product_id = $(this).attr("data-id");
         action = $(this).attr("data-action");
         url = $(this).attr('data-url');
@@ -15,10 +15,17 @@ $(document).ready(function() {
             url:url,
             data:data,
             success:function(response){
-                if(response.status == "Failed"){
+                if(response.status == "login_required"){
+                    swal(response.message,'','info').then(function(){
+                        window.location = '/users/login';
+                    })
+                }if(response.status == 'Failed'){
+                    swal(response.message,'','error')
+                }else{
                     console.log(response)
-                    console.log("raise the error")
-                }else{$('#cart_counter').html(response['cartItems']);
+                    $('#cart_counter').html(response['cartItems']);
+                    $('#cart_count'+cartItemID).html(response['count']);
+
                 // $('#qty-'+product_id).html(response.cart_counter['cart_count']);
                 }
             }
@@ -42,12 +49,23 @@ $(document).ready(function() {
             data:data,
             success:function(response){
                 console.log(response)
-                if(response.status == "Failed"){
-                    console.log("raise the error")
-                }else{$('#delete_item'+cartItemID).html("");
+                if(response.status == "login_required"){
+                    swal(response.message,'','info').then(function(){
+                        window.location = '/users/login';
+                    })
+                }if(response.status == 'Failed'){
+                    swal(response.message,'','error')
+                }
+                else{$('#delete_item'+cartItemID).html("");
                 // $('#qty-'+product_id).html(response.cart_counter['cart_count']);
                 }
             }
         })
     })
-});    
+
+
+   
+});
+
+
+

@@ -1,0 +1,46 @@
+@keyframes show-toast{
+    0% {bottom: -100%;}
+    20% { bottom: 100px;}
+    80% { bottom: 100px;}
+    100% { bottom: -100%;}
+}
+
+.show-notification{
+    position: fixed;
+    bottom: 100%;
+    right: 20px;
+    animation-name:show-toast;
+    animation-duration: 5s;
+}
+
+
+.alert {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+  
+  .alert .close {
+    position: absolute;
+    top: 2px;
+    right: 2 rem;
+    padding: 0.5rem;
+    color: black;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    font-size: 20px;
+  }
+  
+.alert .close:focus {
+outline: none;
+}
+  
+.alert .close:hover {
+color: red;
+}
+
+.alert-error{
+    background-color: rgb(220, 119, 119);
+}

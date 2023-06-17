@@ -3,8 +3,9 @@ from .models import *
 
 from django.http import JsonResponse, HttpResponse
 import json
+from django.contrib.auth.decorators import login_required
 
-
+from .utils import searchProducts,paginateProducts
 
 # Create your views here.
 def home(request):
@@ -12,8 +13,10 @@ def home(request):
         customer = request.user.customer
         cart, created = Cart.objects.get_or_create(customer=customer)
         items = cart.cartitem_set.all()
+
     else:
-        print("guess user")
+        items = {}
+        cart = {}
 
     products = Product.objects.all()
     context = {'products':products,'items':items,'cart':cart}
@@ -26,37 +29,48 @@ def store(request):
         cart, created = Cart.objects.get_or_create(customer=customer)
         items = cart.cartitem_set.all()
     else:
-        print("guess user")
+        items = {}
+        cart = {}
 
 
-    products = Product.objects.all()
-    context = {'products':products,'items':items,'cart':cart}
+
+    products, search_query = searchProducts(request)
+    custom_range , products = paginateProducts(request,products,4)
+    
+    
+    products_count = Product.objects.count()
+    
+
+    context = {'products':products,'items':items,'cart':cart,'search_query':search_query,'custom_range':custom_range,'products_count':products_count}
     return render(request,"store/store.html",context)
 
 
 def product_detail(request,pk):
     product = Product.objects.get(id=pk)
-    customer = request.user.customer
-    cart, created = Cart.objects.get_or_create(customer=customer)
+    
     try:
+        customer = request.user.customer
+        cart, created = Cart.objects.get_or_create(customer=customer)
         cartItem = CartItem.objects.get(cart__customer=customer,product=product)
         quantity = cartItem.quantity
         if quantity < 1:
             quantity = 0
     except:
+        cart = {}
         quantity = 0
 
     context = {"product":product,"quantity":quantity,'cart':cart}
     return render(request,"store/product_details.html",context)
 
-
+@login_required(login_url='login')
 def cart(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         cart, created = Cart.objects.get_or_create(customer=customer)
         items = cart.cartitem_set.all()
     else:
-        print("guess user")
+        items = {}
+        cart = {}
 
         
 
@@ -69,7 +83,8 @@ def checkout(request):
         cart, created = Cart.objects.get_or_create(customer=customer)
         items = cart.cartitem_set.all()
     else:
-        print("guess user")
+        items = {}
+        cart = {}
 
 
     context = {'items':items,'cart':cart}
@@ -101,6 +116,7 @@ def clear_cart(request):
     # Redirect the user to a different page if the request method is not POST
     return redirect('cart')
 
+
 def updateCartItem(request):
     if request.method == 'GET':
         data = request.GET  # Get the data from the request
@@ -114,21 +130,33 @@ def updateCartItem(request):
                     try:
                         cart, created = Cart.objects.get_or_create(customer=request.user.customer)
                         cartItem, created = CartItem.objects.get_or_create(cart=cart,product=product)
-                        print(cartItem)
                         if action == 'add':
                             cartItem.quantity = (cartItem.quantity + 1)
-                        cartItem.save()
+                        elif action == 'subtract':
+                            cartItem.quantity = (cartItem.quantity - 1)
+
+                        cartItem.save()  
+
+                        count = cartItem.quantity
+                
+                        if count == 0:                           
+                            if cartItem.quantity <= 0:
+                                print(cartItem.quantity)
+                                cartItem.delete()
+                                count=0
+
                         cartItems = cart.get_cart_items
-                        return JsonResponse({"status":"Success","message":"added product to the cart","cartItems":cartItems})
+
+                        return JsonResponse({"status":"Success","message":action,"cartItems":cartItems,'count':count})
                     except Exception as e:
                         print(e)
-                        return JsonResponse({"status":"failed","message":"cart funcitonality failed"})
+                        return JsonResponse({"status":"Failed","message":"You do not have this item in your cart"})
                             
                 except Exception as e:
                     print(e)
                     return JsonResponse({'status':'Failed','message':'This product does not exists!!'})    
         else:
-            return JsonResponse({'status':'Failed','message':'Please login to continue'})       
+            return JsonResponse({'status':'login_required','message':'Please login to continue'})       
     else:
         return JsonResponse({'status':'Failed','message':'Invalid request!!'})       
 
@@ -151,7 +179,7 @@ def delete_from_cart(request):
                     print(e)
                     return JsonResponse({'status':'Failed','message':'This product does not exists!!'})    
         else:
-            return JsonResponse({'status':'Failed','message':'Please login to continue'})       
+            return JsonResponse({'status':'login_required','message':'Please login to continue'})       
     else:
         return JsonResponse({'status':'Failed','message':'Invalid request!!'})       
 
