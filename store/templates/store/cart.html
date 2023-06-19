@@ -135,7 +135,7 @@
             <div class="col-lg-4 col-md-12 col-12">
                 <div class="grand-total-wrap">
                     <div class="grand-total-content">
-                        <h3>Subtotal <span>$180.00</span></h3>
+                        <h3>Subtotal <span class="sub-total">${{cart.get_cart_total}}</span></h3>
                         <div class="grand-shipping">
                             <span>Shipping</span>
                             <ul>
@@ -148,11 +148,11 @@
                             <p>Shipping to Bangladesh</p>
                         </div>
                         <div class="grand-total">
-                            <h4>Total <span>$185.00</span></h4>
+                            <h4>Total <span>${{cart.get_cart_total}}</span></h4>
                         </div>
                     </div>
                     <div class="grand-total-btn btn-hover">
-                        <a class="btn theme-color" href="checkout.html">Proceed to checkout</a>
+                        <a class="btn theme-color" href="{% url 'checkout' %}">Proceed to checkout</a>
                     </div>
                 </div>
             </div>

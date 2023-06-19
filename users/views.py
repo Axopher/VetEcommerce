@@ -28,9 +28,8 @@ def loginUser(request):
         if user is not None:
             # it creates session id in session table and also adds it to browser cookies
             login(request,user)
-            print("logged in")
             messages.success(request,"User successfully logged in")
-            return redirect('store')
+            return redirect('profile')
         else:
             messages.error(request,"Failed to log in!!")
             
@@ -55,7 +54,12 @@ def registerUser(request):
             user.save()
             messages.success(request,"Your account has been registered successfully")
             login(request, user)            
-            return redirect('store')
+            return redirect('profile')
 
     context ={'form':form, 'active_tab': 'register'}
     return render(request,'users/login_register.html',context)
+
+
+def profile(request):
+    context = {}
+    return render(request,"users/profile.html",context)

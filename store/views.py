@@ -55,6 +55,7 @@ def product_detail(request,pk):
         quantity = cartItem.quantity
         if quantity < 1:
             quantity = 0
+            cartItem.delete()
     except:
         cart = {}
         quantity = 0
@@ -86,6 +87,7 @@ def checkout(request):
         items = {}
         cart = {}
 
+    
 
     context = {'items':items,'cart':cart}
     return render(request,"store/checkout.html",context)
@@ -130,18 +132,19 @@ def updateCartItem(request):
                     try:
                         cart, created = Cart.objects.get_or_create(customer=request.user.customer)
                         cartItem, created = CartItem.objects.get_or_create(cart=cart,product=product)
+                        print(cartItem)
+                        print(cartItem.quantity)
                         if action == 'add':
                             cartItem.quantity = (cartItem.quantity + 1)
                         elif action == 'subtract':
-                            cartItem.quantity = (cartItem.quantity - 1)
+                            if cartItem.quantity > 0:
+                                cartItem.quantity -= 1    
 
                         cartItem.save()  
 
                         count = cartItem.quantity
-                
                         if count == 0:                           
                             if cartItem.quantity <= 0:
-                                print(cartItem.quantity)
                                 cartItem.delete()
                                 count=0
 
