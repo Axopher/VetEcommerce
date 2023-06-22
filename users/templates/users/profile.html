@@ -12,7 +12,7 @@
                             <div class="myaccount-tab-menu nav" role="tablist">
                                 <a href="#dashboad" class="active" data-bs-toggle="tab" aria-selected="true" role="tab">Dashboard</a>
                                 <a href="#orders" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Orders</a>
-                                <a href="#download" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Download</a>
+                                <a href="#change-password" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Change Password</a>
                                 <a href="#payment-method" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Payment Method</a>
                                 <a href="#address-edit" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Address</a>
                                 <a href="#account-info" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Account Details</a>
@@ -79,34 +79,38 @@
                                 </div>
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade" id="download" role="tabpanel">
+                                <div class="tab-pane fade" id="change-password" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3>Downloads</h3>
+                                        <h3>Change Password</h3>
                                         <div class="myaccount-table table-responsive text-center">
-                                            <table class="table table-bordered">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Product</th>
-                                                        <th>Date</th>
-                                                        <th>Expire</th>
-                                                        <th>Download</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Haven - Free Real Estate PSD Template</td>
-                                                        <td>Aug 22, 2022</td>
-                                                        <td>Yes</td>
-                                                        <td><a href="#" class="check-btn sqr-btn "><i class="fa fa-cloud-download"></i> Download File</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>HasTech - Profolio Business Template</td>
-                                                        <td>Sep 12, 2022</td>
-                                                        <td>Never</td>
-                                                        <td><a href="#" class="check-btn sqr-btn "><i class="fa fa-cloud-download"></i> Download File</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="account-details-form">
+                                                <form action="#">  
+                                                    <fieldset>
+                                                        <div class="single-input-item">
+                                                            <label for="current-pwd" class="required">Current Password</label>
+                                                            <input type="password" id="current-pwd">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="single-input-item">
+                                                                    <label for="new-pwd" class="required">New Password</label>
+                                                                    <input type="password" id="new-pwd">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="single-input-item">
+                                                                    <label for="confirm-pwd" class="required">Confirm Password</label>
+                                                                    <input type="password" id="confirm-pwd">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>                                                 
+                                                    <div class="single-input-item btn-hover">
+                                                        <button class="check-btn sqr-btn">Save Changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -138,50 +142,93 @@
                                     <div class="myaccount-content">
                                         <h3>Account Details</h3>
                                         <div class="account-details-form">
-                                            <form action="#">
+                                            <form action="{% url 'profile' %}" method="POST">
+                                                {% csrf_token %}
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item">
                                                             <label for="first-name" class="required">First Name</label>
-                                                            <input type="text" id="first-name">
+                                                            {{profile_form.first_name}}
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item">
                                                             <label for="last-name" class="required">Last Name</label>
-                                                            <input type="text" id="last-name">
+                                                            {{profile_form.first_name}}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="single-input-item">
-                                                    <label for="display-name" class="required">Display Name</label>
-                                                    <input type="text" id="display-name">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="single-input-item">
+                                                            <label for="username" class="required">Username*</label>
+                                                            {{profile_form.username}}
+                                                        </div>    
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="single-input-item">
+                                                            <label for="email" class="required">Email Address*</label>
+                                                            {{profile_form.email}}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="single-input-item">
-                                                    <label for="email" class="required">Email Addres</label>
-                                                    <input type="email" id="email">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="single-input-item">
+                                                            <label for="phone" class="required">phone number</label>
+                                                            {{profile_form.phone}}
+                                                        </div>    
+                                                    </div>
                                                 </div>
                                                 <fieldset>
-                                                    <legend>Password change</legend>
-                                                    <div class="single-input-item">
-                                                        <label for="current-pwd" class="required">Current Password</label>
-                                                        <input type="password" id="current-pwd">
-                                                    </div>
+                                                    <legend>Powered By Google</legend>
+                                                        <div class="single-input-item">
+                                                            <label for="address" class="required">Address</label>
+                                                            {{profile_form.address}}
+                                                        </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="single-input-item">
-                                                                <label for="new-pwd" class="required">New Password</label>
-                                                                <input type="password" id="new-pwd">
-                                                            </div>
+                                                                <label for="country" class="required">Country</label>
+                                                                {{profile_form.country}}
+                                                            </div>   
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="single-input-item">
-                                                                <label for="confirm-pwd" class="required">Confirm Password</label>
-                                                                <input type="password" id="confirm-pwd">
+                                                                <label for="state" class="required">State</label>
+                                                                {{profile_form.state}}
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="city" class="required">City</label>
+                                                                {{profile_form.city}}
+                                                            </div>   
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="pin-code" class="required">Pin Code</label>
+                                                                {{profile_form.pin_code}}
+                                                            </div>
+                                                        </div>
+                                                    </div>                                               
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="latitude" class="required">Latitude</label>
+                                                                {{profile_form.latitude}}
+                                                            </div>   
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="longitude" class="required">Longitude</label>
+                                                                {{profile_form.longitude}}
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </fieldset>
+                                                </fieldset>                                                                                                                                          
                                                 <div class="single-input-item btn-hover">
                                                     <button class="check-btn sqr-btn">Save Changes</button>
                                                 </div>

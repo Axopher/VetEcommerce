@@ -78,6 +78,7 @@ def cart(request):
     context = {'items':items,'cart':cart}
     return render(request,"store/cart.html",context)
 
+@login_required(login_url='login')
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -92,7 +93,7 @@ def checkout(request):
     context = {'items':items,'cart':cart}
     return render(request,"store/checkout.html",context)
 
-
+@login_required(login_url='login')
 def update_cart(request):
     if request.method == 'POST':
         # Get the updated quantity values from the form data
@@ -108,6 +109,7 @@ def update_cart(request):
     # Redirect the user to a different page if the request method is not POST
     return redirect('cart')  
 
+@login_required(login_url='login')
 def clear_cart(request):
     # Get the cart items associated with the current user
     cart_items = CartItem.objects.filter(cart__customer=request.user.customer)
@@ -119,12 +121,12 @@ def clear_cart(request):
     return redirect('cart')
 
 
-def updateCartItem(request):
+def updateCartItem(request):   
     if request.method == 'GET':
         data = request.GET  # Get the data from the request
         product_id = data.get('product_id')  # Access the 'product_id' parameter
         action = data.get('action')  # Access the 'action' parameter
-
+        print("I am here")
         if request.user.is_authenticated:
             if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
                 try:
@@ -132,6 +134,7 @@ def updateCartItem(request):
                     try:
                         cart, created = Cart.objects.get_or_create(customer=request.user.customer)
                         cartItem, created = CartItem.objects.get_or_create(cart=cart,product=product)
+                        print("I am here")
                         print(cartItem)
                         print(cartItem.quantity)
                         if action == 'add':
@@ -157,12 +160,13 @@ def updateCartItem(request):
                             
                 except Exception as e:
                     print(e)
-                    return JsonResponse({'status':'Failed','message':'This product does not exists!!'})    
+                    return JsonResponse({'status':'Failed','message':'This product does not exist!!'})    
         else:
             return JsonResponse({'status':'login_required','message':'Please login to continue'})       
     else:
         return JsonResponse({'status':'Failed','message':'Invalid request!!'})       
 
+@login_required(login_url='login')
 def delete_from_cart(request):
     if request.method == 'GET':
         data = request.GET  # Get the data from the request

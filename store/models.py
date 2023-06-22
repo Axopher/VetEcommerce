@@ -3,21 +3,6 @@ from django.contrib.auth.models import User
 from users.models import Customer
 
 # Create your models here.
-
-# class Slider(models.Model):
-#     Discount_Deal = (
-#         ('Hot Deals','Hot Deals'),
-#         ('New Arrivals','New Arrivals'),
-#     )
-#     Image = models.ImageField(upload_to="slider")
-#     Discount_Deal = models.CharField(choices=Discount_Deal,max_length=100)
-#     Discount = models.PositiveIntegerField()
-#     Product = models.CharField()
-#     logo = models.ImageField()
-#     Link = models.CharField(max_length=200)
-
-
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -52,15 +37,6 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
         
-	# @property
-	# def shipping(self):
-	# 	shipping = False
-	# 	orderitems = self.orderitem_set.all()
-	# 	for i in orderitems:
-	# 		if i.product.digital == False:
-	# 			shipping = True
-	# 	return shipping
-
     @property
     def get_order_total(self):
         orderitems = self.orderitem_set.all()

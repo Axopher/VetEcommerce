@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 
 from django.contrib.auth.models import User
@@ -6,6 +6,11 @@ from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm
 
 from django.contrib import messages
+
+from .models import Customer
+
+from django.contrib.auth.decorators import login_required
+from .forms import UserProfileForm
 
 # Create your views here.
 def loginUser(request):
@@ -59,7 +64,22 @@ def registerUser(request):
     context ={'form':form, 'active_tab': 'register'}
     return render(request,'users/login_register.html',context)
 
-
+@login_required(login_url='login')
 def profile(request):
-    context = {}
+    profile = get_object_or_404(Customer,user=request.user)
+    profile_form = UserProfileForm(instance=profile)
+
+    if request.method == "POST":
+        profile_form = UserProfileForm(request.POST,instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request,"settings updated.")
+            return redirect('profile')
+        else:
+            print(profile_form.errors)
+
+
+    context = {
+        'profile_form':profile_form
+    }
     return render(request,"users/profile.html",context)
