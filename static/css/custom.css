@@ -21,17 +21,17 @@
     border-radius: 0.25rem;
   }
   
-  .alert .close {
-    position: absolute;
-    top: 2px;
-    right: 2 rem;
-    padding: 0.5rem;
-    color: black;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    font-size: 20px;
-  }
+.alert .close {
+  position: absolute;
+  top: 2px;
+  right: 2 rem;
+  padding: 0.5rem;
+  color: black;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+}
   
 .alert .close:focus {
 outline: none;

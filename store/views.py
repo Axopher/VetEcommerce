@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
 
 from django.http import JsonResponse, HttpResponse
@@ -6,6 +6,11 @@ import json
 from django.contrib.auth.decorators import login_required
 
 from .utils import searchProducts,paginateProducts
+
+from users.models import Customer
+
+from users.forms import UserProfileForm
+from .forms import BillingForm
 
 # Create your views here.
 def home(request):
@@ -81,17 +86,74 @@ def cart(request):
 @login_required(login_url='login')
 def checkout(request):
     if request.user.is_authenticated:
+        profile = get_object_or_404(Customer,user=request.user)
+        # preparing billing forms
+        profile_form = UserProfileForm(instance=profile)
+        billing_form = BillingForm(instance=profile)
+        # showing custom cart info 
         customer = request.user.customer
         cart, created = Cart.objects.get_or_create(customer=customer)
         items = cart.cartitem_set.all()
+
+        if request.method == "POST":
+            print(request.POST)
+            print("inside request.POST")
+            # Retrieve form data and store it in session variables
+            request.session['billing_details'] = {
+                'first_name': request.POST['first_name'],
+                'last_name': request.POST['last_name'],
+                'username': request.POST['username'],
+                'address': request.POST['address'],
+                'country': request.POST['country'],
+                'city': request.POST['city'],
+                'state': request.POST['state'],
+                'pin_code': request.POST['pin_code'],
+                'latitude': request.POST['latitude'],
+                'longitude': request.POST['longitude'],
+                'phone': request.POST['phone'],
+                'email': request.POST['email'],
+                'message': request.POST['message'],
+            }
+            
+            
+            return redirect('confirmation')
+
     else:
         items = {}
         cart = {}
+        billing_form = {}
 
     
 
-    context = {'items':items,'cart':cart}
+    context = {'items':items,'cart':cart,'billing_form':billing_form,'profile_form':profile_form}
     return render(request,"store/checkout.html",context)
+
+@login_required(login_url='login')
+def confirmation(request):
+    billing_details = request.session.get('billing_details')
+    print("here i am in confirmation page")
+    print(billing_details)
+
+    if billing_details:
+        customer = request.user.customer
+        print(customer)
+        cart, created = Cart.objects.get_or_create(customer=customer)
+        items = cart.cartitem_set.all()
+        
+        context = {'items':items,'cart':cart,'billing_details': billing_details}
+        return render(request, "store/confirmation.html", context)
+    else:
+        return redirect('checkout')
+
+
+@login_required(login_url='login')
+def process_order(request):
+    billing_details = request.session.get('billing_details')
+    print(billing_details)
+    print(request.POST)
+    del request.session['billing_details']
+    return HttpResponse("payment processing")
+    
 
 @login_required(login_url='login')
 def update_cart(request):

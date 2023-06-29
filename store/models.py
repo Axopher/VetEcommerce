@@ -96,11 +96,13 @@ class CartItem(models.Model):
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    country = models.CharField(max_length=200, null=False)
-    state = models.CharField(max_length=200, null=False)
-    city = models.CharField(max_length=200, null=False)
-    address = models.CharField(max_length=200, null=False) 
-    zipcode = models.CharField(max_length=200, null=False)
+    address = models.CharField(max_length=100)
+    country = models.CharField(max_length=20)
+    state = models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
+    pin_code = models.CharField(max_length=8,blank=True,null=True)
+    latitude = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

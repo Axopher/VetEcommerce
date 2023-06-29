@@ -68,12 +68,15 @@ def registerUser(request):
 def profile(request):
     profile = get_object_or_404(Customer,user=request.user)
     profile_form = UserProfileForm(instance=profile)
-
+    
     if request.method == "POST":
         profile_form = UserProfileForm(request.POST,instance=profile)
         if profile_form.is_valid():
-            profile_form.save()
-            messages.success(request,"settings updated.")
+            profile = profile_form.save(commit=False)
+            # Assign the user value to the profile instance
+            profile.user = request.user
+            profile.save()
+            messages.success(request, "Profile updated.")
             return redirect('profile')
         else:
             print(profile_form.errors)

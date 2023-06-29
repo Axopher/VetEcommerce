@@ -1,0 +1,171 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="breadcrumb-area bg-gray-4 breadcrumb-padding-1">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <h2>Confirm</h2>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><i class="ti-angle-right"></i></li>
+                <li>Confirm Details</li>
+            </ul>
+        </div>
+    </div>
+    <div class="breadcrumb-img-1">
+        <img src="assets/images/banner/breadcrumb-1.png" alt="">
+    </div>
+    <div class="breadcrumb-img-2">
+        <img src="assets/images/banner/breadcrumb-2.png" alt="">
+    </div>
+</div>
+
+
+{% if billing_details %}
+<div class="checkout-main-area pb-100 pt-100">
+    <div class="container">
+        <div class="checkout-wrap pt-30">
+            <button type="button" class="btn btn-secondary custom-button" onclick="history.back()">Go Back</button>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="your-order-area">
+                        <h3>Confirm your Billing Details</h3>
+                        <div class="your-order-wrap gray-bg-4">
+                            <div class="your-order-info-wrap">
+                                <div class="your-order-info">
+                                    <ul>
+                                        <li>Your personal details<span></span></li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-middle">
+                                    <ul>
+                                        <li>First Name<span> {{ billing_details.first_name }}</span></li>
+                                        <li>Last Name<span> {{ billing_details.last_name }}</span></li>
+                                        <li>Username<span> {{ billing_details.username }}</span></li>
+                                        <li>Email<span> {{ billing_details.email }}</span></li>
+                                        <li>Phone<span> {{ billing_details.phone }}</span></li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="your-order-info">
+                                    <ul>
+                                        <li>Your Address Details<span></span></li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-middle">
+                                    <ul>
+                                        <li><strong> {{ billing_details.address }} </strong></li>
+                                        <br>
+                                        <li>City<span> {{ billing_details.city }}</span></li>
+                                        <li>State<span> {{ billing_details.state }}</span></li>
+                                        <li>Country<span> {{ billing_details.country }}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="your-order-area">
+                        <h3>Your order</h3>
+                        <div class="your-order-wrap gray-bg-4">
+                            <div class="your-order-info-wrap">
+                                <div class="your-order-info">
+                                    <ul>
+                                        <li>Product <span>Total</span></li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-middle">
+                                    <ul>
+                                        {% for item in items %}
+                                        <li>{{item.product.name}} X {{item.quantity}} <span>${{item.get_total}} </span></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="your-order-info order-subtotal">
+                                    <ul>
+                                        <li>Subtotal <span>${{cart.get_cart_total}} </span></li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-info order-shipping">
+                                    <ul>
+                                        <li>Shipping <p>Enter your full address </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-info order-total">
+                                    <ul>
+                                        <li>Total <span>${{cart.get_cart_total}} </span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <form action="{% url 'process_order' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="payment-method">
+                                <div class="pay-top sin-payment">
+                                    <input id="payment_method_1" class="input-radio" type="radio" value="bank_transfer" checked="checked" name="payment_method">
+                                    <label for="payment_method_1"> Direct Bank Transfer </label>
+                                    <div class="payment-box payment_method_bacs" style="display: block;">
+                                        <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                                    </div>
+                                </div>
+                                <div class="pay-top sin-payment">
+                                    <input id="payment-method-2" class="input-radio" type="radio" value="cheque" name="payment_method">
+                                    <label for="payment-method-2">Check payments</label>
+                                    <div class="payment-box payment_method_bacs">
+                                        <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                                    </div>
+                                </div>
+                                <div class="pay-top sin-payment">
+                                    <input id="payment-method-3" class="input-radio" type="radio" value="cash_on_delivery" name="payment_method">
+                                    <label for="payment-method-3">Cash on delivery </label>
+                                    <div class="payment-box payment_method_bacs">
+                                        <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                                    </div>
+                                </div>
+                                <div class="pay-top sin-payment sin-payment-3">
+                                    <input id="payment-method-4" class="input-radio" type="radio" value="paypal" name="payment_method">
+                                    <label for="payment-method-4">PayPal <img alt="" src="assets/images/icon-img/payment.png"><a href="#">What is PayPal?</a></label>
+                                    <div class="payment-box payment_method_bacs">
+                                        <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Place-order btn-hover">
+                                <button>Make Payment</button>
+                            </div>
+                            </form>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    <h3>No billing details found.</h3>
+{% endif %}
+
+
+<style>
+.custom-button {
+    background-color: grey;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 2rem;
+    margin-left: 0;
+    border-radius: 4px;
+    }
+    
+.custom-button:hover {
+    transition: .8s ease-in-out;
+    background-color: black;
+}
+      
+</style>
+
+{% endblock %}

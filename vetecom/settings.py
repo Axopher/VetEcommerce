@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.get_google_api',
             ],
         },
     },
@@ -134,3 +135,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR/'static/images')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+GOOGLE_API_KEY = 'AIzaSyCDesrTi3lnsP5iZSmtboadmm4_loGZbDk'
