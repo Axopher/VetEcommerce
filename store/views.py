@@ -11,6 +11,8 @@ from users.models import Customer
 
 from users.forms import UserProfileForm
 from .forms import BillingForm
+from django.contrib import messages
+import uuid
 
 # Create your views here.
 def home(request):
@@ -149,10 +151,67 @@ def confirmation(request):
 @login_required(login_url='login')
 def process_order(request):
     billing_details = request.session.get('billing_details')
-    print(billing_details)
-    print(request.POST)
-    del request.session['billing_details']
-    return HttpResponse("payment processing")
+    username = billing_details['username']
+    first_name = billing_details['first_name']
+    last_name = billing_details['last_name']
+    address = billing_details['address']
+    country = billing_details['country']
+    city = billing_details['city']
+    state = billing_details['state']
+    pin_code = billing_details['pin_code']
+    latitude = billing_details['latitude']
+    longitude = billing_details['longitude']
+    phone = billing_details['phone']
+    email = billing_details['email']
+    order_notes = billing_details['message']
+
+    if request.POST:
+        try:
+            customer = Customer.objects.get(username=username)  
+            cart= Cart.objects.get(customer=customer)
+            items = cart.cartitem_set.all()
+
+            transaction_id = str(uuid.uuid4())
+
+            order = Order.objects.create(
+                customer=customer,
+                transaction_id=transaction_id,
+                order_notes=order_notes
+            )
+
+            for item in items:
+                OrderItem.objects.create(
+                    product=item.product,
+                    order=order,
+                    quantity=item.quantity,
+                )
+
+            order.complete = True
+            order.save()
+
+            items.delete()
+            cart.delete()
+
+            shipping_address = ShippingAddress.objects.create(
+                customer=customer,
+                order=order,
+                address=address,
+                country=country,
+                state=state,
+                city=city,
+                pin_code=pin_code,
+                latitude=latitude,
+                longitude=longitude
+            )
+
+            messages.success(request,f"Payment successful.Your transaction id is {transaction_id}")
+            # del request.session['billing_details']
+            return redirect("home")
+        except Exception as e:
+            messages.error(request,"customer details did not match")
+            return redirect('checkout')   
+    else:
+         messages.error(request,f"Payment Failed!!")   
     
 
 @login_required(login_url='login')
