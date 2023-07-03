@@ -18,7 +18,7 @@
                         <div class="footer-widget footer-widget-margin-1 footer-list mb-40">
                             <h3 class="footer-title">Information</h3>
                             <ul>
-                                <li><a href="about-us.html">About Us</a></li>
+                                <li><a href="#">About Us</a></li>
                                 <li><a href="#">Delivery Information</a></li>
                                 <li><a href="#">Privacy Policy</a></li>
                                 <li><a href="#">Terms &amp; Conditions</a></li>
@@ -28,13 +28,11 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                         <div class="footer-widget footer-list mb-40">
-                            <h3 class="footer-title">My Accound</h3>
+                            <h3 class="footer-title">My Account</h3>
                             <ul>
-                                <li><a href="my-account.html">My Account</a></li>
-                                <li><a href="#">Order History</a></li>
-                                <li><a href="wishlist.html">Wish List</a></li>
+                                <li><a href="{% url 'profile' %}">My Account</a></li>
+                                <li><a href="{% url 'profile' %}?active_tab=orders_history">Order History</a></li>
                                 <li><a href="#">Newsletter</a></li>
-                                <li><a href="#">Order History</a></li>
                             </ul>
                         </div>
                     </div>
@@ -59,7 +57,7 @@
     <div class="bg-gray-3">
         <div class="container">
             <div class="footer-bottom copyright text-center bg-gray-3">
-                <p>Copyright ©2022 All rights reserved | Made with <i class="fa fa-heart"></i> by <a href="https://hasthemes.com/"> HasThemes</a>.</p>
+                <p>Copyright ©2022 All rights reserved</p>
             </div>
         </div>
     </div>

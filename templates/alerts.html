@@ -1,11 +1,34 @@
 {% if messages %}
     {% for message in messages %}
+        {% if 'error' in message.tags and 'empty_cart' in message.extra_tags %}
+            <script>
+                swal({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ message }}',
+                }).then(function() {
+                    window.location.href = "{% url 'store' %}";
+                });
+            </script>
+        {% elif 'success' in message.tags and 'payment_successful' in message.extra_tags %}
+        <script>
+            console.log("payment successful!!!")
+            swal({
+                icon: 'success',
+                title: 'Payment Successful!!!',
+                text: '{{ message }}',
+            }).then(function() {
+                window.location.href = "{% url 'profile' %}";
+            });
+        </script>
+        {% else %}
         <div class="alert alert-{{message.tags}} show-notification  alert-dismissible fade show" role="alert">
             {{ message }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>    
+        {% endif %}
     {% endfor %}
 {% endif %}
 

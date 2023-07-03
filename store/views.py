@@ -40,15 +40,15 @@ def store(request):
         cart = {}
 
 
+    category_id = request.GET.get('category_id')
+    products, search_query = searchProducts(request, category_id)
+    custom_range , products, num_of_results, total_results = paginateProducts(request,products,20)
 
-    products, search_query = searchProducts(request)
-    custom_range , products = paginateProducts(request,products,4)
-    
-    
-    products_count = Product.objects.count()
-    
+    # categories operation
+    categories = Category.objects.all()
 
-    context = {'products':products,'items':items,'cart':cart,'search_query':search_query,'custom_range':custom_range,'products_count':products_count}
+
+    context = {'products':products,'items':items,'cart':cart,'search_query':search_query,'custom_range':custom_range,'total_results':total_results,'num_of_results':num_of_results,'categories':categories}
     return render(request,"store/store.html",context)
 
 
@@ -63,11 +63,14 @@ def product_detail(request,pk):
         if quantity < 1:
             quantity = 0
             cartItem.delete()
+            
+        items = cart.cartitem_set.all()    
     except:
         cart = {}
+        items = {}
         quantity = 0
 
-    context = {"product":product,"quantity":quantity,'cart':cart}
+    context = {"product":product,"quantity":quantity,'cart':cart,'items':items}
     return render(request,"store/product_details.html",context)
 
 @login_required(login_url='login')
@@ -96,6 +99,10 @@ def checkout(request):
         customer = request.user.customer
         cart, created = Cart.objects.get_or_create(customer=customer)
         items = cart.cartitem_set.all()
+
+        if not items:  # Add this check to see if the cart is empty
+            messages.error(request, "Your cart is empty. Please add items before proceeding to checkout.", "empty_cart")
+            return redirect('cart')  # Redirect back to the cart page
 
         if request.method == "POST":
             print(request.POST)
@@ -167,7 +174,7 @@ def process_order(request):
 
     if request.POST:
         try:
-            customer = Customer.objects.get(username=username)  
+            customer = Customer.objects.get(username=username,email=email)  
             cart= Cart.objects.get(customer=customer)
             items = cart.cartitem_set.all()
 
@@ -204,9 +211,9 @@ def process_order(request):
                 longitude=longitude
             )
 
-            messages.success(request,f"Payment successful.Your transaction id is {transaction_id}")
-            # del request.session['billing_details']
-            return redirect("home")
+            messages.success(request,f"Your transaction id is {transaction_id}","payment_successful")
+            del request.session['billing_details']
+            return redirect("profile")
         except Exception as e:
             messages.error(request,"customer details did not match")
             return redirect('checkout')   
@@ -226,6 +233,7 @@ def update_cart(request):
         for cart_item, quantity in zip(cart_items, quantities):
             cart_item.quantity = int(quantity)
             cart_item.save()
+        messages.success(request,"Cart Updated!")    
 
     # Redirect the user to a different page if the request method is not POST
     return redirect('cart')  
@@ -237,7 +245,7 @@ def clear_cart(request):
 
     # Delete all the cart items
     cart_items.delete()
-
+    messages.success(request,"Cart Cleared!") 
     # Redirect the user to a different page if the request method is not POST
     return redirect('cart')
 
@@ -247,7 +255,6 @@ def updateCartItem(request):
         data = request.GET  # Get the data from the request
         product_id = data.get('product_id')  # Access the 'product_id' parameter
         action = data.get('action')  # Access the 'action' parameter
-        print("I am here")
         if request.user.is_authenticated:
             if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
                 try:
@@ -255,14 +262,11 @@ def updateCartItem(request):
                     try:
                         cart, created = Cart.objects.get_or_create(customer=request.user.customer)
                         cartItem, created = CartItem.objects.get_or_create(cart=cart,product=product)
-                        print("I am here")
-                        print(cartItem)
-                        print(cartItem.quantity)
                         if action == 'add':
                             cartItem.quantity = (cartItem.quantity + 1)
                         elif action == 'subtract':
                             if cartItem.quantity > 0:
-                                cartItem.quantity -= 1    
+                                cartItem.quantity -= 1
 
                         cartItem.save()  
 

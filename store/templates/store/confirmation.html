@@ -5,7 +5,7 @@
         <div class="breadcrumb-content text-center">
             <h2>Confirm</h2>
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
                 <li><i class="ti-angle-right"></i></li>
                 <li>Confirm Details</li>
             </ul>
@@ -33,7 +33,7 @@
                             <div class="your-order-info-wrap">
                                 <div class="your-order-info">
                                     <ul>
-                                        <li>Your personal details<span></span></li>
+                                        <li style="font-size: 1rem;padding: 4px;">Your personal details<span></span></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-middle">
@@ -45,10 +45,9 @@
                                         <li>Phone<span> {{ billing_details.phone }}</span></li>
                                     </ul>
                                 </div>
-                                <hr>
                                 <div class="your-order-info">
                                     <ul>
-                                        <li>Your Address Details<span></span></li>
+                                        <li style="font-size: 1rem;padding: 4px;">Your Address Details<span></span></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-middle">
@@ -64,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="your-order-area">
                         <h3>Your order</h3>
                         <div class="your-order-wrap gray-bg-4">
@@ -77,7 +76,7 @@
                                 <div class="your-order-middle">
                                     <ul>
                                         {% for item in items %}
-                                        <li>{{item.product.name}} X {{item.quantity}} <span>${{item.get_total}} </span></li>
+                                        <li>{{item.product.name}} X {{item.quantity}} <span>{{item.get_total}}</span></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -88,7 +87,7 @@
                                 </div>
                                 <div class="your-order-info order-shipping">
                                     <ul>
-                                        <li>Shipping <p>Enter your full address </p>
+                                        <li>Shipping <span style="width:18rem;margin-left:0px;color:black;">{{billing_details.address}}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -130,8 +129,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="Place-order btn-hover">
-                                <button>Make Payment</button>
+                            <div >
+                                <button class="make-payment">Make Payment</button>
                             </div>
                             </form>
                         </div>  
@@ -147,6 +146,26 @@
 
 
 <style>
+
+.make-payment{
+    border:none;
+    background-color: #e97730;
+    display: block;
+    cursor: pointer;
+    padding: 16px 50px 17px;
+    text-transform: capitalize;
+    width: 100%;color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    z-index: 1;
+}
+.make-payment:hover{
+    background-color: black;
+    transition: all .5s ease-in-out 0s;
+}
+
+
 .custom-button {
     background-color: grey;
     color: #fff;

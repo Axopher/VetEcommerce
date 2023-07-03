@@ -14,7 +14,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=7,decimal_places=2)
-    image = models.ImageField(null=True, blank=True,default="product/product-1.png")
+    image = models.ImageField(null=True, blank=True,default="product/default.png",upload_to='images/product/')
 
     def __str__(self):
         return self.name
@@ -27,13 +27,18 @@ class Product(models.Model):
             url = ''
         return url
 
+# class ExtraImage(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')
+#     image = models.ImageField(upload_to='images/product/extra_images/')
+
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
     order_notes = models.TextField(max_length=1000, null=True,blank=True)
-    
+
+
     def __str__(self):
         return str(self.id)
         

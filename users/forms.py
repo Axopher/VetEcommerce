@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django import forms
 from store.models import ShippingAddress
 from .models import Customer
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -41,3 +43,41 @@ class UserProfileForm(forms.ModelForm):
         fields = "__all__"
         exclude = ['user']
 
+        widgets = {
+            'email': forms.EmailInput(attrs={
+                'pattern': r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                'title': 'Please enter a valid email address.',
+                'required': 'required',
+
+            }),
+            'first_name': forms.TextInput(attrs={
+                'pattern': "[a-zA-Z\s]+",
+                'title': 'Only letters and spaces are allowed.',
+                'required': 'required',
+
+            }),
+            'last_name': forms.TextInput(attrs={
+                'pattern': "[a-zA-Z\s]+",
+                'title': 'Only letters and spaces are allowed.',
+                'required': 'required',
+
+            }),
+            'phone': forms.TextInput(attrs={
+                'pattern': "9[78][0-9]{8}",
+                'title': 'Please enter a valid phone number.',
+                'required': 'required',
+
+            }),
+            }    
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add your desired CSS class to the form fields
+        self.fields['old_password'].widget.attrs['class'] = 'form-control'
+        self.fields['old_password'].widget.attrs['placeholder'] = 'Enter Your Old Password'
+        self.fields['new_password1'].widget.attrs['class'] = 'form-control'
+        self.fields['new_password1'].widget.attrs['placeholder'] = 'Enter Your New Password'
+        self.fields['new_password2'].widget.attrs['class'] = 'form-control'
+        self.fields['new_password2'].widget.attrs['placeholder'] = 'Confirm Your New password'

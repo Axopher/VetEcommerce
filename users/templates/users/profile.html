@@ -10,8 +10,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
-                                <a href="#dashboad" class="active" data-bs-toggle="tab" aria-selected="true" role="tab">Dashboard</a>
-                                <a href="#orders" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Orders</a>
+                                <a href="#dashboad" class="{% if active_tab != 'orders_history' %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if active_tab != 'orders_history' %}true{% else %}false{% endif %}" role="tab">Dashboard</a>
+                                <a href="#orders" class="{% if active_tab == 'orders_history' %}active{% endif %}" data-bs-toggle="tab" aria-selected="{% if active_tab == 'orders_history' %}true{% else %}false{% endif %}" tabindex="-1" role="tab">Orders</a>
                                 <a href="#change-password" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Change Password</a>
                                 <a href="#payment-method" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Payment Method</a>
                                 <a href="#account-info" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Account Details</a>
@@ -23,11 +23,11 @@
                         <div class="col-lg-9 col-md-8">
                             <div class="tab-content" id="myaccountContent">
                                 <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+                                <div class="tab-pane fade {% if active_tab != 'orders_history' %}active show{% endif %}" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content">
                                         <h3>Dashboard</h3>
                                         <div class="welcome">
-                                            <p>Hello, <strong>Alex Tuntuni</strong> (If Not <strong>Tuntuni !</strong><a href="login-register.html" class="logout"> Logout</a>)</p>
+                                            <p>Welcome, <strong>{{request.user}}!!!</strong></p>
                                         </div>
 
                                         <p class="mb-0">From your account dashboard. you can easily check &amp; view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p>
@@ -35,46 +35,84 @@
                                 </div>
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade" id="orders" role="tabpanel">
+                                <div class="tab-pane fade {% if active_tab == 'orders_history' %}active show{% endif %}" id="orders" role="tabpanel">
                                     <div class="myaccount-content">
                                         <h3>Orders</h3>
+                                        <div style="margin-top: 2rem;margin-bottom:1rem;">
+                                        <form id="searchFormOrders" method="get">
+                                            <div class="container">
+                                                <div class="row">
+                                                  <div class="col">
+                                                    {{ orderFilter.form.payment_start_date.label }}
+                                                    {{ orderFilter.form.payment_start_date }}
+                                                  </div>
+                                                  <div class="col">
+                                                    {{ orderFilter.form.payment_end_date.label }}
+                                                    {{orderFilter.form.payment_end_date}}
+                                                  </div>
+                                                  <div class="col">
+                                                    {{ orderFilter.form.status.label }}
+                                                    {{ orderFilter.form.status }}
+                                                  </div>
+                                                  <div class="col">
+                                                    <input type="hidden" name="active_tab" value="orders_history">
+                                                    <br>
+                                                    <button class="form-control filter-button">Apply Filter</button>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        </div>
                                         <div class="myaccount-table table-responsive text-center">
                                             <table class="table table-bordered">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th>Order</th>
                                                         <th>Date</th>
-                                                        <th>Status</th>
+                                                        <th>status</th>
                                                         <th>Total</th>
-                                                        <th>Action</th>
+                                                        <th>Product</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>                                                   
+                                                        <th>Order Notes</th>
+                                                        <th>Transaction ID</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {% for order in orders %}
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Aug 22, 2022</td>
-                                                        <td>Pending</td>
-                                                        <td>$3000</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                                                        <td>{{ order.date_ordered }}</td>
+                                                        <td>{{ order.complete }}</td>
+                                                        <td>{{ order.get_order_total }}</td>
+                                                        <td>
+                                                            {% for order_item in order.orderitem_set.all %}
+                                                            {{ order_item.product.name }}
+                                                            {% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>{{ order.get_order_items }}</td>
+                                                        <td>
+                                                            {% for order_item in order.orderitem_set.all %}
+                                                            {{ order_item.product.price }}
+                                                            {% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </td>
+                                                        {% if order.order_notes %}
+                                                        <td>{{ order.order_notes }}</td>
+                                                        {% else %}
+                                                        <td>no notes</td>
+                                                        {% endif %}
+                                                        <td>{{order.transaction_id}}</td>
+                                                        <td><a href="{% url 'order_details' order.id %}" class="check-btn sqr-btn ">View</a></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>July 22, 2022</td>
-                                                        <td>Approved</td>
-                                                        <td>$200</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>June 12, 2017</td>
-                                                        <td>On Hold</td>
-                                                        <td>$990</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
+                                                    {% endfor %}
                                                 </tbody>
                                             </table>
+                                            {% include 'pagination.html' with queryset=orders custom_range=custom_range %}
                                         </div>
+                                        
                                     </div>
+                                    
                                 </div>
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
@@ -83,31 +121,30 @@
                                         <h3>Change Password</h3>
                                         <div class="myaccount-table table-responsive text-center">
                                             <div class="account-details-form">
-                                                <form action="#">  
+                                                <form action="{% url 'change_password' %}" method="POST">
+                                                    {% csrf_token %}
                                                     <fieldset>
-                                                        <div class="single-input-item">
-                                                            <label for="current-pwd" class="required">Current Password</label>
-                                                            <input type="password" id="current-pwd">
+                                                      <div class="single-input-item">
+                                                        {{ form.old_password}}
+                                                      </div>
+                                                      <div class="row">
+                                                        <div class="col-lg-6">
+                                                          <div class="single-input-item">
+                                                            {{ form.new_password1}}
+                                                          </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="single-input-item">
-                                                                    <label for="new-pwd" class="required">New Password</label>
-                                                                    <input type="password" id="new-pwd">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div class="single-input-item">
-                                                                    <label for="confirm-pwd" class="required">Confirm Password</label>
-                                                                    <input type="password" id="confirm-pwd">
-                                                                </div>
-                                                            </div>
+                                                        <div class="col-lg-6">
+                                                          <div class="single-input-item">
+                                                            {{ form.new_password2}}
+                                                          </div>
                                                         </div>
-                                                    </fieldset>                                                 
+                                                      </div>
+                                                    </fieldset>
                                                     <div class="single-input-item btn-hover">
-                                                        <button class="check-btn sqr-btn">Save Changes</button>
+                                                      <button type="submit" class="check-btn sqr-btn">Save Changes</button>
                                                     </div>
-                                                </form>
+                                                  </form>
+                                                  
                                             </div>
                                             
                                         </div>
@@ -180,4 +217,23 @@
         </div>
     </div>
 </div>
+
+<style>
+    .filter-button {
+        background-color: grey;
+        color: #fff;
+        border: none;
+        font-size: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-left: 0;
+        border-radius: 4px;
+        }
+        
+    .filter-button:hover {
+        transition: .8s ease-in-out;
+        background-color: black;
+    }
+          
+</style>
 {% endblock%}

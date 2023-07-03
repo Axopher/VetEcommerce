@@ -21,6 +21,8 @@
 <script>
     // GET search form and page links
     let searchForm = document.getElementById('searchForm')
+    let searchFormOrders = document.getElementById('searchFormOrders')
+    console.log(searchForm)
     let pageLinks = document.getElementsByClassName('page-link')
 
     // ensure search form exists
@@ -36,6 +38,23 @@
                 console.log(searchForm)
                 // submit form 
                 searchForm.submit()
+                
+            })
+        }
+    }
+
+    if(searchFormOrders){
+        for(let i = 0; pageLinks.length > i; i++ ){
+            pageLinks[i].addEventListener('click',function (e){
+                e.preventDefault()
+                
+                // get the data attribute
+                let page = this.dataset.page
+                // add hidden search input to form
+                searchFormOrders.innerHTML += `<input value=${page} name="page" hidden/>`
+                console.log(searchFormOrders)
+                // submit form 
+                searchFormOrders.submit()
             })
         }
     }

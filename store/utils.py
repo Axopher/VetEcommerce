@@ -29,20 +29,32 @@ def paginateProducts(request,products,results):
 
     custom_range =  range(leftIndex,rightIndex)
 
-    return custom_range, products
+    # Get the total number of results
+    total_results = paginator.count
 
-def searchProducts(request):
+    # Get the current page number
+    page_number = request.GET.get('page')
+    current_page = paginator.get_page(page_number)
+
+    # Get the number of results on the current page
+    num_results_on_page = len(current_page)
+
+    return custom_range, products, num_results_on_page, total_results
+
+def searchProducts(request,category_id=None):
     search_query = ''
 
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')
 
+
     products = Product.objects.filter(
         Q(name__icontains=search_query) |
-        Q(description__icontains=search_query) |
-        Q(category__name__icontains=search_query) 
-
+        Q(description__icontains=search_query)
     )
+
+    if category_id:
+        products = products.filter(category_id=category_id)
 
 
     return products,search_query

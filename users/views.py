@@ -8,9 +8,16 @@ from .forms import CustomUserCreationForm
 from django.contrib import messages
 
 from .models import Customer
+from store.models import Order
 
 from django.contrib.auth.decorators import login_required
 from .forms import UserProfileForm
+
+from .filters import OrderFilter
+from .utils import paginateOrders
+
+from .forms import CustomPasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 def loginUser(request):
@@ -69,6 +76,18 @@ def profile(request):
     profile = get_object_or_404(Customer,user=request.user)
     profile_form = UserProfileForm(instance=profile)
     
+    customer = Customer.objects.get(user=request.user)
+    orders = Order.objects.filter(customer=customer)
+
+    orderFilter = OrderFilter(request.GET,queryset=orders)
+    orders = orderFilter.qs
+    
+    active_tab = request.GET.get('active_tab', 'dashboard')
+
+    custom_range, orders = paginateOrders(request, orders,10)
+
+    form = CustomPasswordChangeForm(request.user)
+
     if request.method == "POST":
         profile_form = UserProfileForm(request.POST,instance=profile)
         if profile_form.is_valid():
@@ -83,6 +102,42 @@ def profile(request):
 
 
     context = {
-        'profile_form':profile_form
+        'profile_form':profile_form,
+        'orders':orders,
+        'orderFilter':orderFilter,
+        'active_tab':active_tab,
+        'custom_range':custom_range,
+        'form':form,
     }
+
     return render(request,"users/profile.html",context)
+
+def order_details(request,pk):
+    order  = Order.objects.get(id=pk)
+    print(order)
+    for orderitem in order.orderitem_set.all():
+        print(orderitem.product.name)
+
+    context = {'order':order}
+    return render(request,"users/order_details.html",context) 
+
+@login_required(login_url="login")
+def changePassword(request):
+    print("password change")
+    form = CustomPasswordChangeForm(request.user)
+    if request.method == 'POST':
+
+        print("changing password here ")
+        form = CustomPasswordChangeForm(request.user, request.POST)
+
+        if(form.is_valid()):
+            user = form.save()
+            update_session_auth_hash(request, user)  # Update session
+            messages.success(request, 'Password was successfully updated!! Please log in again')
+            logout(request)  # Log out the user
+            return redirect('login')
+    
+    context = {
+        'form':form,
+    }
+    return render(request,"profile.html",context)       

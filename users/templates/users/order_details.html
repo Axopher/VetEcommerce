@@ -1,0 +1,93 @@
+{% extends "main.html" %}
+{% load static %}
+{% block content %}
+
+<div class="breadcrumb-area bg-gray-4 breadcrumb-padding-1">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <h2>Order Details</h2>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><i class="ti-angle-right"></i></li>
+                <li>Order Details</li>
+            </ul>
+        </div>
+    </div>
+    <div class="breadcrumb-img-1">
+        <img src="assets/images/banner/breadcrumb-1.png" alt="">
+    </div>
+    <div class="breadcrumb-img-2">
+        <img src="assets/images/banner/breadcrumb-2.png" alt="">
+    </div>
+</div>
+
+<div class="cart-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                    {% csrf_token %}
+                    <div class="cart-table-content">
+                        <div class="table-content table-responsive">
+                            <table>
+                                <thead>
+                                    
+                                    <tr>
+                                        <th class="width-thumbnail"></th>
+                                        <th class="width-name">Product</th>
+                                        <th class="width-price"> Price</th>
+                                        <th class="width-quantity">Quantity</th>
+                                        <th class="width-subtotal">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for orderitem in order.orderitem_set.all %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="#"><img src="{{ orderitem.product.image.url }}"></td></a>
+                                        </td>
+                                        <td class="product-name">
+                                            <h5><a href="#">{{orderitem.product.name}}</a></h5>
+                                        </td>
+                                        <td class="product-cart-price"><span class="amount">{{orderitem.product.price}}</span></td>
+                                        <td class="cart-quality">
+                                            {{orderitem.quantity}}
+                                        </td>
+                                        <td class="product-total"><span>{{orderitem.get_total}}</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="cart-shiping-update-wrapper">
+                                <div class="cart-shiping-update btn-hover">
+                                    <a onclick="history.back()">Go Back</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row" data-select2-id="select2-data-10-nql0">
+            <div class="col-lg-3 col-md-6 col-12" data-select2-id="select2-data-9-bm38">
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+            </div>
+            <div class="col-lg-6 col-md-12 col-12">
+                <div class="grand-total-wrap">
+                    <div class="grand-total-content">
+                        <h3>Quantity <span class="sub-total">{{order.get_order_items}}</span></h3>
+                        <div class="grand-total">
+                            <h4>Total <span>${{order.get_order_total}}</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} 

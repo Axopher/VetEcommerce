@@ -6,6 +6,7 @@
 }
 
 .show-notification{
+    z-index: 1000;
     position: fixed;
     bottom: 100%;
     right: 20px;
@@ -15,6 +16,7 @@
 
 
 .alert {
+    z-index: 1000;
     padding: 1rem 1.5rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
