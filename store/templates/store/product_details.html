@@ -7,100 +7,53 @@
             <div class="col-lg-6">
                 <div class="product-details-img-wrap product-details-vertical-wrap" data-aos="fade-up" data-aos-delay="200">
                     <div class="product-details-small-img-wrap">
-                        <div class="swiper-container product-details-small-img-slider-1 pd-small-img-style">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
+                        <div class="swiper-container product-details-small-img-slider-1 pd-small-img-style swiper-container-initialized swiper-container-vertical swiper-container-thumbs">
+                            <div class="swiper-wrapper" id="swiper-wrapper-fb4b4ae13580f4cb" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                                <div class="swiper-slide swiper-slide-active swiper-slide-thumb-active" style="height: 96px; margin-bottom: 12px;" role="group" aria-label="1 / 5">
                                     <div class="product-details-small-img">
-                                        <img src="{{product.image.url}}" alt="Product Thumnail">
+                                        <img  src="{{product.imageURL}}" alt="{{product.name}}">
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                {% for extra_image in product.extraimage_set.all %}
+                                <div class="swiper-slide swiper-slide-next" style="height: 96px; margin-bottom: 12px;" role="group" aria-label="2 / 5">
                                     <div class="product-details-small-img">
-                                        <img src="{{product.image.url}}" alt="Product Thumnail">
+                                        <img src="{{extra_image.image.url}}" alt="{{product.name}}">
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
-                                    <div class="product-details-small-img">
-                                        <img src="{{product.image.url}}" alt="Product Thumnail">
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="product-details-small-img">
-                                        <img src="assets/images/product-details/pro-details-small-img-4.png" alt="Product Thumnail">
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="product-details-small-img">
-                                        <img src="assets/images/product-details/pro-details-small-img-5.png" alt="Product Thumnail">
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
-                        </div>
-                        <div class="pd-prev pd-nav-style"> <i class="ti-angle-up"></i></div>
-                        <div class="pd-next pd-nav-style"> <i class="ti-angle-down"></i></div>
+                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                        <div class="pd-prev pd-nav-style swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-fb4b4ae13580f4cb" aria-disabled="true"> <i class="ti-angle-up"></i></div>
+                        <div class="pd-next pd-nav-style" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-fb4b4ae13580f4cb" aria-disabled="false"> <i class="ti-angle-down"></i></div>
                     </div>
                     <div class="swiper-container product-details-big-img-slider-1 pd-big-img-style">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <div class="easyzoom-style">
                                     <div class="easyzoom easyzoom--overlay">
-                                        <a href="{{product.image.url}}">
-                                            <img src="{{product.image.url}}" alt="">
+                                        <a href="{{product.imageURL}}"> 
+                                            <img style="max-width: 470px;max-height:522px;"src="{{product.imageURL}}" alt="{{product.name}}">
                                         </a>
                                     </div>
-                                    <a class="easyzoom-pop-up img-popup" href="{{product.image.url}}">
+                                    <a class="easyzoom-pop-up img-popup" href="{{product.imageURL}}">
                                         <i class="pe-7s-search"></i>
                                     </a>
                                 </div>
                             </div>
+                            {% for extra_img in product.extraimage_set.all %}
                             <div class="swiper-slide">
                                 <div class="easyzoom-style">
                                     <div class="easyzoom easyzoom--overlay">
-                                        <a href="{{product.image.url}}">
-                                            <img src="{{product.image.url}}" alt="">
+                                        <a href="{{extra_img.image.url}}">
+                                            <img src="{{extra_img.image.url}}" alt="{{product.name}}">
                                         </a>
                                     </div>
-                                    <a class="easyzoom-pop-up img-popup" href="{{product.image.url}}">
+                                    <a class="easyzoom-pop-up img-popup" href="{{extra_img.image.url}}">
                                         <i class="pe-7s-search"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="swiper-slide">
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="{{product.image.url}}">
-                                            <img src="{{product.image.url}}" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="{{product.image.url}}">
-                                        <i class="pe-7s-search"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/pro-details-zoom-img-4.png">
-                                            <img src="assets/images/product-details/pro-details-large-img-4.png" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/pro-details-large-img-4.png">
-                                        <i class="pe-7s-search"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="assets/images/product-details/pro-details-zoom-img-5.png">
-                                            <img src="assets/images/product-details/pro-details-large-img-5.png" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="assets/images/product-details/pro-details-large-img-5.png">
-                                        <i class="pe-7s-search"></i>
-                                    </a>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -189,7 +142,6 @@
             <div id="des-details1" class="tab-pane active">
                 <div class="product-description-content text-center">
                     <p data-aos="fade-up" data-aos-delay="200">{{product.description}} </p>
-                    <p data-aos="fade-up" data-aos-delay="400">{{product.description}} </p>
                 </div>
             </div>
             <div id="des-details2" class="tab-pane">

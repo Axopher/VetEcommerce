@@ -14,7 +14,9 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=7,decimal_places=2)
-    image = models.ImageField(null=True, blank=True,default="product/default.png",upload_to='images/product/')
+    image = models.ImageField(null=True, blank=True,default="product/default.png",upload_to='product/')
+    created = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.name
@@ -24,19 +26,30 @@ class Product(models.Model):
         try:
             url = self.image.url
         except:
-            url = ''
+            url = "/static/images/product/default.png"
         return url
 
-# class ExtraImage(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')
-#     image = models.ImageField(upload_to='images/product/extra_images/')
+    class Meta:
+        ordering = ['-created']    
+
+class ExtraImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product/extra_images/')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 class Order(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('shipping', 'Shipping'),
+        ('completed', 'Completed'),
+    )
+
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    complete = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     transaction_id = models.CharField(max_length=100, null=True)
-    order_notes = models.TextField(max_length=1000, null=True,blank=True)
+    order_notes = models.TextField(max_length=1000, null=True, blank=True)
 
 
     def __str__(self):
@@ -116,7 +129,8 @@ class ShippingAddress(models.Model):
 class ContactMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.CharField(max_length=255)
-    message = models.TextField()        
+    message = models.TextField()   
+    created = models.DateTimeField(auto_now_add=True)     
 
     def __str__(self):
         return self.user

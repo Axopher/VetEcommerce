@@ -25,9 +25,9 @@ class OrderFilter(django_filters.FilterSet):
     )
 
     status = django_filters.ChoiceFilter(
-        field_name="complete",
+        field_name="status",
         label='Status',
-        choices=(('True', 'True'), ('False', 'False')),
+        choices=(('pending', 'Pending'), ('shipping', 'Shipping'), ('completed', 'Completed')),
         empty_label='All',
         widget=forms.Select(attrs={
             'placeholder': 'Select status',
