@@ -8,7 +8,7 @@ from .forms import CustomUserCreationForm
 from django.contrib import messages
 
 from .models import Customer
-from store.models import Order
+from store.models import Order,Cart
 
 from django.contrib.auth.decorators import login_required
 from .forms import UserProfileForm
@@ -73,9 +73,11 @@ def registerUser(request):
 
 @login_required(login_url='login')
 def profile(request):
+    # getting profile information
     profile = get_object_or_404(Customer,user=request.user)
     profile_form = UserProfileForm(instance=profile)
     
+    # getting customer orders data
     customer = Customer.objects.get(user=request.user)
     orders = Order.objects.filter(customer=customer)
 
@@ -100,6 +102,9 @@ def profile(request):
         else:
             print(profile_form.errors)
 
+    # getting cart items
+    cart, created = Cart.objects.get_or_create(customer=customer)
+    items = cart.cartitem_set.all()
 
     context = {
         'profile_form':profile_form,
@@ -108,6 +113,8 @@ def profile(request):
         'active_tab':active_tab,
         'custom_range':custom_range,
         'form':form,
+        'items':items,
+        'cart':cart,
     }
 
     return render(request,"users/profile.html",context)

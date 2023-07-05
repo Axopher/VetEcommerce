@@ -14,6 +14,8 @@ from .forms import BillingForm
 from django.contrib import messages
 import uuid
 
+from django.db.models import Sum
+
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
@@ -25,8 +27,12 @@ def home(request):
         items = {}
         cart = {}
 
+    new_arrivals = Product.objects.order_by('-created')[:8]
+    best_sellers = Product.objects.annotate(sold_quantity=Sum('orderitem__quantity')).order_by('-sold_quantity')[:8]
+    sale_items = Product.objects.filter(is_on_sale=True).order_by('-discount')[:8]
+
     products = Product.objects.all()
-    context = {'products':products,'items':items,'cart':cart}
+    context = {'products':products,'items':items,'cart':cart,'new_arrivals':new_arrivals,'best_sellers':best_sellers,'sale_items':sale_items}
     return render(request,"home.html",context)
 
 

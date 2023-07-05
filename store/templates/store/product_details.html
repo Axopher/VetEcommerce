@@ -11,7 +11,7 @@
                             <div class="swiper-wrapper" id="swiper-wrapper-fb4b4ae13580f4cb" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
                                 <div class="swiper-slide swiper-slide-active swiper-slide-thumb-active" style="height: 96px; margin-bottom: 12px;" role="group" aria-label="1 / 5">
                                     <div class="product-details-small-img">
-                                        <img  src="{{product.imageURL}}" alt="{{product.name}}">
+                                        <img   src="{{product.imageURL}}" alt="{{product.name}}">
                                     </div>
                                 </div>
                                 {% for extra_image in product.extraimage_set.all %}
@@ -32,7 +32,7 @@
                                 <div class="easyzoom-style">
                                     <div class="easyzoom easyzoom--overlay">
                                         <a href="{{product.imageURL}}"> 
-                                            <img style="max-width: 470px;max-height:522px;"src="{{product.imageURL}}" alt="{{product.name}}">
+                                            <img style="width:470px;height:522px;" src="{{product.imageURL}}" alt="{{product.name}}">
                                         </a>
                                     </div>
                                     <a class="easyzoom-pop-up img-popup" href="{{product.imageURL}}">
@@ -45,7 +45,7 @@
                                 <div class="easyzoom-style">
                                     <div class="easyzoom easyzoom--overlay">
                                         <a href="{{extra_img.image.url}}">
-                                            <img src="{{extra_img.image.url}}" alt="{{product.name}}">
+                                            <img style="width:470px;height:522px;" src="{{extra_img.image.url}}" alt="{{product.name}}">
                                         </a>
                                     </div>
                                     <a class="easyzoom-pop-up img-popup" href="{{extra_img.image.url}}">

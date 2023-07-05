@@ -14,9 +14,10 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=7,decimal_places=2)
+    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     image = models.ImageField(null=True, blank=True,default="product/default.png",upload_to='product/')
+    is_on_sale = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
-
 
     def __str__(self):
         return self.name
@@ -29,8 +30,20 @@ class Product(models.Model):
             url = "/static/images/product/default.png"
         return url
 
+    @property
+    def discounted_price(self):    
+        after_discount = self.price - (self.price * (self.discount / 100))
+        return after_discount
+
+    def save(self, *args, **kwargs):
+        self.is_on_sale = self.discount > 0
+        self.discount = max(0, self.discount)  # Ensure discount is non-negative
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['-created']    
+
+
 
 class ExtraImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
