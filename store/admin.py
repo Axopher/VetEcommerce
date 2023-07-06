@@ -1,15 +1,31 @@
 from django.contrib import admin
 from .models import *
+from django.utils.html import format_html
 
 class ExtraImageInline(admin.StackedInline):
     model = ExtraImage
     extra = 0
     max_num = 5 
 
+
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'description', 'price', 'created']
-    search_fields = ['name', 'category__name','price']
+    list_display = ['name', 'category', 'display_description', 'price','discount', 'created']
+    list_filter = ['category__name']
+    search_fields = ['name', 'category__name', 'price']
     inlines = [ExtraImageInline]  # Include the ExtraImageInline inlines
+
+    def display_description(self, obj):
+        max_length = 100  # Set the maximum number of characters to display
+        if len(obj.description) > max_length:
+            description = obj.description[:max_length] + '...'
+        else:
+            description = obj.description
+        return format_html(description)
+
+    display_description.short_description = 'Description'
+
+
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem

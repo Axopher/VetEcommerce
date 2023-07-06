@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from users.models import Customer
+from tinymce.models import HTMLField
 
 # Create your models here.
 class Category(models.Model):
@@ -12,9 +13,9 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200,unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = HTMLField()
     price = models.DecimalField(max_digits=7,decimal_places=2)
-    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0,verbose_name="Discount rate(%)")
     image = models.ImageField(null=True, blank=True,default="product/default.png",upload_to='product/')
     is_on_sale = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -88,7 +89,7 @@ class OrderItem(models.Model):
 
 	@property
 	def get_total(self):
-		total = self.product.price * self.quantity
+		total = self.product.discounted_price * self.quantity
 		return total
 
 
@@ -121,7 +122,7 @@ class CartItem(models.Model):
 
     @property
     def get_total(self):
-        total = self.product.price * self.quantity
+        total = self.product.discounted_price * self.quantity
         return total
 
 class ShippingAddress(models.Model):

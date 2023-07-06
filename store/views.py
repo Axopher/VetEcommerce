@@ -95,6 +95,11 @@ def cart(request):
     return render(request,"store/cart.html",context)
 
 @login_required(login_url='login')
+def contact(request):
+    context = {}
+    return render(request,"store/contact.html",context)    
+
+@login_required(login_url='login')
 def checkout(request):
     if request.user.is_authenticated:
         profile = get_object_or_404(Customer,user=request.user)

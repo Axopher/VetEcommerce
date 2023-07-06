@@ -179,7 +179,7 @@
                                     <img src="{{product.imageURL}}" style="width:270px;height:300px;" alt="image">
                                 </a>
                                 <div class="product-badge badge-top badge-right badge-pink">
-                                    <span>-10%</span>
+                                    <span>-{{product.discount}}%</span>
                                 </div>
                                 <div class="product-action-wrap">
                                     <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}">
@@ -187,14 +187,14 @@
                                     </button>
                                 </div>
                                 <div class="product-action-2-wrap">
-                                    <button class="product-action-btn-2" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
+                                    <button data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="product-action-btn-2 add-btn add_to_cart" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
                                 </div>
                             </div>
                             <div class="product-content">
                                 <h3><a href="{% url 'product_detail' product.id %}">{{product}}</a></h3>
                                 <div class="product-price">
-                                    <span class="old-price">Rs. {{product.price}} </span>
-                                    <span class="new-price">Rs. {{product.price}} </span>
+                                    <span class="old-price">Rs. {{product.price|floatformat:2}} </span>
+                                    <span class="new-price">Rs. {{product.discounted_price|floatformat:2}} </span>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +212,7 @@
                                     <img src="{{product.imageURL}}" style="width:270px;height:300px;" alt="product">
                                 </a>
                                 <div class="product-badge badge-top badge-right badge-pink">
-                                    <span>-10%</span>
+                                    <span>-{{product.discount}}%</span>
                                 </div>
                                 <div class="product-action-wrap">
                                     <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -220,14 +220,14 @@
                                     </button>
                                 </div>
                                 <div class="product-action-2-wrap">
-                                    <button class="product-action-btn-2" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
+                                    <button data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="product-action-btn-2 add-btn add_to_cart" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
                                 </div>
                             </div>
                             <div class="product-content">
                                 <h3><a href="{% url 'product_detail' product.id %}">{{product}}</a></h3>
                                 <div class="product-price">
-                                    <span class="old-price">Rs. {{product.price}}</span>
-                                    <span class="new-price">Rs, {{product.price}} </span>
+                                    <span class="old-price">Rs. {{product.price|floatformat:2}}</span>
+                                    <span class="new-price">Rs. {{product.discounted_price|floatformat:2}}</span>
                                 </div>
                             </div>
                         </div>
@@ -243,10 +243,10 @@
                         <div class="product-wrap mb-35">
                             <div class="product-img img-zoom mb-25">
                                 <a href="{% url 'product_detail' product.id %}">
-                                    <img src="{{product.imageURL}}" alt="">
+                                    <img src="{{product.imageURL}}"  style="width:270px;height:300px;" alt="product">
                                 </a>
                                 <div class="product-badge badge-top badge-right badge-pink">
-                                    <span>-10%</span>
+                                    <span>-{{product.discoun}}%</span>
                                 </div>
                                 <div class="product-action-wrap">
                                     <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -254,14 +254,14 @@
                                     </button>
                                 </div>
                                 <div class="product-action-2-wrap">
-                                    <button class="product-action-btn-2" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
+                                    <button data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="product-action-btn-2 add-btn add_to_cart" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
                                 </div>
                             </div>
                             <div class="product-content">
                                 <h3><a href="{% url 'product_detail' product.id %}">{{product}}</a></h3>
                                 <div class="product-price">
-                                    <span class="old-price">Rs. {{product.price}}</span>
-                                    <span class="new-price">Rs. {{product.price}}</span>
+                                    <span class="old-price">Rs. {{product.price|floatformat:2}}</span>
+                                    <span class="new-price">Rs. {{product.discounted_price|floatformat:2}}</span>
                                 </div>
                             </div>
                         </div>

@@ -83,7 +83,7 @@
                                                     <tr>
                                                         <td>{{ order.date_ordered }}</td>
                                                         <td>{{ order.status }}</td>
-                                                        <td>{{ order.get_order_total }}</td>
+                                                        <td>{{ order.get_order_total|floatformat:2 }}</td>
                                                         <td>
                                                             {% for order_item in order.orderitem_set.all %}
                                                             {{ order_item.product.name }}
@@ -93,7 +93,7 @@
                                                         <td>{{ order.get_order_items }}</td>
                                                         <td>
                                                             {% for order_item in order.orderitem_set.all %}
-                                                            {{ order_item.product.price }}
+                                                            {{ order_item.product.discounted_price|floatformat:2 }}
                                                             {% if not forloop.last %}, {% endif %}
                                                             {% endfor %}
                                                         </td>

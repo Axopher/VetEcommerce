@@ -58,7 +58,7 @@
                                                 <img style="width:270px;height:300px;" src="{{product.imageURL}}" alt="">
                                             </a>
                                             <div class="product-badge badge-top badge-right badge-pink">
-                                                <span>-10%</span>
+                                                <span>-{{product.discount}}%</span>
                                             </div>
                                             <div class="product-action-wrap">
                                                 <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}">
@@ -72,8 +72,8 @@
                                         <div class="product-content">
                                             <h3><a href="#">{{product}}</a></h3>
                                             <div class="product-price">
-                                                <span class="old-price">${{product.price|floatformat:2}} </span>
-                                                <span class="new-price">${{product.price|floatformat:2}} </span>
+                                                <span class="old-price">Rs. {{product.price|floatformat:2}} </span>
+                                                <span class="new-price">Rs. {{product.discounted_price|floatformat:2}} </span>
                                             </div>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                                                 <img src="{{product.imageURL}}" alt="Product Style">
                                             </a>
                                             <div class="product-list-badge badge-right badge-pink">
-                                                <span>-10%</span>
+                                                <span>-{{product.discount}}%</span>
                                             </div>
                                             <div class="product-list-quickview">
                                                 <button class="product-action-btn-2" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal{{product.id}}">
@@ -107,8 +107,8 @@
                                         <div class="shop-list-content">
                                             <h3><a href="#">{{product.name}}</a></h3>
                                             <div class="product-price">
-                                                <span class="old-price">$70.89 </span>
-                                                <span class="new-price">$55.25 </span>
+                                                <span class="old-price">Rs. {{product.price}} </span>
+                                                <span class="new-price">Rs. {{product.discounted_price}} </span>
                                             </div>
                                             <div class="product-list-rating">
                                                 <i class=" ti-star"></i>
@@ -117,7 +117,7 @@
                                                 <i class=" ti-star"></i>
                                                 <i class=" ti-star"></i>
                                             </div>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tristique bibend est a fermentum. Cras faucibus ex quis justo consectetur eleifend in eget diam.</p>
+                                            <p>{{product.description}}</p>
                                             <div class="product-list-action">
                                                 <button data-id={{product.id}} data-action="add" data-url="{% url 'update_cart_item' %}" class="product-action-btn-3 add-btn add_to_cart"  title="Add to cart"><i class="pe-7s-cart"></i></button>
                                             </div>

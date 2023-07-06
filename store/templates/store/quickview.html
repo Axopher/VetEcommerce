@@ -19,28 +19,10 @@
                         <div class="product-details-content quickview-content">
                             <h2>{{product}}</h2>
                             <div class="product-details-price">
-                                <span class="old-price">Rs. {{product.price}}</span>
-                                <span class="new-price">Rs. {{product.price}}</span>
+                                <span class="old-price">Rs. {{product.price|floatformat:2}}</span>
+                                <span class="new-price">Rs. {{product.discounted_price|floatformat:2}}</span>
                             </div>
-                            <div class="product-details-review">
-                                <div class="product-rating">
-                                    <i class=" ti-star"></i>
-                                    <i class=" ti-star"></i>
-                                    <i class=" ti-star"></i>
-                                    <i class=" ti-star"></i>
-                                    <i class=" ti-star"></i>
-                                </div>
-                                <span>( 1 Customer Review )</span>
-                            </div>
-                            <div class="product-color product-color-active product-details-color">
-                                <span>Color :</span>
-                                <ul>
-                                    <li><a title="Pink" class="pink" href="#">pink</a></li>
-                                    <li><a title="Yellow" class="active yellow" href="#">yellow</a></li>
-                                    <li><a title="Purple" class="purple" href="#">purple</a></li>
-                                </ul>
-                            </div>
-                            <p>{{product.description}}</p>
+                            <p>{{product.description|safe }}</p>
                             <div class="product-details-action-wrap">
                                 <div>         
                                     <ul>

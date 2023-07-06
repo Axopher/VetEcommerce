@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'users.apps.UsersConfig',
     'django_filters',
+    'tinymce',
 ]
 
 MIDDLEWARE = [

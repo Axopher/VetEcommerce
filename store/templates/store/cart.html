@@ -49,13 +49,13 @@
                                         <td class="product-name">
                                             <h5><a href="#">{{item.product}}</a></h5>
                                         </td>
-                                        <td class="product-cart-price"><span class="amount">{{item.product.price}}</span></td>
+                                        <td class="product-cart-price"><span class="amount">{{item.product.discounted_price|floatformat:2}}</span></td>
                                         <td class="cart-quality">
                                             <div class="product-quality"><div class="dec qtybutton">-</div>
                                                 <input class="cart-plus-minus-box input-text qty text" name="quantity" value="{{item.quantity}}">
                                             <div class="inc qtybutton">+</div></div>
                                         </td>
-                                        <td class="product-total"><span>{{item.get_total}}</span></td>
+                                        <td class="product-total"><span>{{item.get_total|floatformat:2}}</span></td>
                                         <td data-id="{{item.id}}" data-action="remove" data-url="{% url 'delete_from_cart' %}" class="product-remove delete_from_cart"><a href="#"><i class=" ti-trash "></i></a></td>
                                     </tr>
                                     {% endfor %}
@@ -91,9 +91,9 @@
             <div class="col-lg-6 col-md-12 col-12">
                 <div class="grand-total-wrap">
                     <div class="grand-total-content">
-                        <h3>Subtotal <span class="sub-total">${{cart.get_cart_total}}</span></h3>
+                        <h3>Subtotal <span class="sub-total">Rs. {{cart.get_cart_total|floatformat:2}}</span></h3>
                         <div class="grand-total">
-                            <h4>Total <span>${{cart.get_cart_total}}</span></h4>
+                            <h4>Total <span>Rs. {{cart.get_cart_total|floatformat:2}}</span></h4>
                         </div>
                     </div>
                     <div class="grand-total-btn btn-hover">

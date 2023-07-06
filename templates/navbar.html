@@ -49,7 +49,7 @@
                                 <li><a href="{% url 'store' %}">SHOP</a>
                                 </li>
                                 <li><a href="#">ABOUT</a></li>
-                                <li><a href="#">CONTACT US</a></li>
+                                <li><a href="{% url 'contact' %}">CONTACT US</a></li>
                                 
                             </ul>
                         </nav>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="cart-title">
                         <h4><a href="#">{{item.product.name}}</a></h4>
-                        <span> {{item.quantity}} × ${{item.product.price|floatformat:2}}</span>
+                        <span> {{item.quantity}} × Rs {{item.product.price|floatformat:2}}</span>
                     </div>
                     <div class="cart-delete">
                         <a href="#">×</a>
@@ -121,7 +121,7 @@
                 {% endfor %}
             </ul>
             <div class="cart-total">
-                <h4>Total: <span>${{cart.get_cart_total|floatformat:2}}</span></h4>
+                <h4>Total: <span>Rs. {{cart.get_cart_total|floatformat:2}}</span></h4>
             </div>
             <div class="cart-btn btn-hover">
                 <a class="theme-color" href="{% url 'cart' %}">view cart</a>

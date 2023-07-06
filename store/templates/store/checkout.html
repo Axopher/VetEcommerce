@@ -125,13 +125,13 @@
                                     <div class="your-order-middle">
                                         <ul>
                                             {% for item in items %}
-                                            <li>{{item.product.name}} X {{item.quantity}} <span>${{item.get_total}} </span></li>
+                                            <li>{{item.product.name}} X {{item.quantity}} <span>Rs. {{item.get_total|floatformat:2}} </span></li>
                                             {% endfor %}
                                         </ul>
                                     </div>
                                     <div class="your-order-info order-total">
                                         <ul>
-                                            <li>Total <span>${{cart.get_cart_total}} </span></li>
+                                            <li>Grand Total <span>Rs. {{cart.get_cart_total|floatformat:2}} </span></li>
                                         </ul>
                                     </div>
                                 </div>

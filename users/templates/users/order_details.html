@@ -48,11 +48,11 @@
                                         <td class="product-name">
                                             <h5><a href="#">{{orderitem.product.name}}</a></h5>
                                         </td>
-                                        <td class="product-cart-price"><span class="amount">{{orderitem.product.price}}</span></td>
+                                        <td class="product-cart-price"><span class="amount">{{orderitem.product.discounted_price|floatformat:2}}</span></td>
                                         <td class="cart-quality">
                                             {{orderitem.quantity}}
                                         </td>
-                                        <td class="product-total"><span>{{orderitem.get_total}}</span></td>
+                                        <td class="product-total"><span>{{orderitem.get_total|floatformat:2}}</span></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -80,7 +80,7 @@
                     <div class="grand-total-content">
                         <h3>Quantity <span class="sub-total">{{order.get_order_items}}</span></h3>
                         <div class="grand-total">
-                            <h4>Total <span>${{order.get_order_total}}</span></h4>
+                            <h4>Total <span>Rs. {{order.get_order_total|floatformat:2}}</span></h4>
                         </div>
                     </div>
                 </div>
